@@ -14,6 +14,8 @@ Um documento Markdown com estrutura fixa de 14 seções: resumo, contexto, goals
 
 Nenhum. A skill não usa scripts.
 
-## Observação sobre o ambiente
+## Uso com o DuzeckClaw
 
-A seção "Entrega" do `SKILL.md` pede que o documento saia no "bloco de arquivo descrito no system prompt", convenção do bot em que a skill foi criada. Em outro agente (como o Claude Code), ajuste essa seção para gravar o arquivo diretamente ou devolver o Markdown na resposta.
+A skill foi feita para o [DuzeckClaw](https://github.com/Duzeck/duzecklaw), agente pessoal controlado pelo Telegram. A seção "Entrega" do `SKILL.md` pede que o documento saia no "bloco de arquivo descrito no system prompt": é o marcador `<<<ARQUIVO:nome.md>>> ... <<<FIM_ARQUIVO>>>` do DuzeckClaw, que o bot converte em anexo `.md` no chat. Para instalar, veja [Usando com o DuzeckClaw](../README.pt-BR.md#usando-com-o-duzeckclaw-telegram).
+
+Em outro agente (como o Claude Code), ajuste essa seção para gravar o arquivo diretamente ou devolver o Markdown na resposta.

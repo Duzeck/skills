@@ -6,7 +6,7 @@
 
 ## Visão geral
 
-Duzeck Skills é uma coleção aberta de skills reutilizáveis, feitas principalmente para o **Claude Code**, no formato [Agent Skills](https://docs.claude.com/pt/docs/claude-code/skills).
+Duzeck Skills é uma coleção aberta de skills reutilizáveis, feitas para o **[DuzeckClaw](https://github.com/Duzeck/duzecklaw)** e o **Claude Code**, no formato [Agent Skills](https://docs.claude.com/pt/docs/claude-code/skills).
 
 Cada skill é uma pasta com um `SKILL.md` (instruções e descrição de quando acionar) e, quando necessário, scripts, referências e arquivos de apoio. O agente carrega a skill sozinho quando o pedido combina com a descrição dela.
 
@@ -23,11 +23,37 @@ Cada skill é uma pasta com um `SKILL.md` (instruções e descrição de quando 
 | [gerar-pdf](gerar-pdf/) | Converte qualquer conteúdo (resumos, relatórios, PRDs, anotações) em um PDF formatado, com capa, sumário, tabelas e numeração de páginas. | Python 3.9+, `reportlab`, `markdown-it-py` |
 | [prd-manager](prd-manager/) | Escreve e revisa PRDs e specs de produto com requisitos numerados, prioridades e critérios de aceite testáveis. | Nenhum |
 
-### Observações sobre o ambiente
+## Usando com o DuzeckClaw (Telegram)
 
-`gerar-pdf`, `resumo-audio-video` e `prd-manager` foram escritas para um agente que roda por trás de um bot do Telegram. Elas citam esse ambiente (envio de arquivo pelo Telegram, a variável `WORKSPACE_DIR`, um bloco de arquivo definido no system prompt). Os scripts também rodam sozinhos pela linha de comando; veja o README de cada skill.
+O [DuzeckClaw](https://github.com/Duzeck/duzecklaw) é um agente pessoal de IA que roda localmente no seu PC e é controlado pelo Telegram (Node.js + TypeScript). Estas skills foram feitas para ele: `gerar-pdf`, `resumo-audio-video`, `resumo-pdf`, `resumo-youtube` e `prd-manager` funcionam direto lá. Você manda um link do YouTube, uma mensagem de voz ou um PDF no chat, e o bot responde com o resumo ou o arquivo.
 
-## Instalação
+1. Instale o DuzeckClaw (Node.js 20+, um token de bot do Telegram e uma API key do Gemini, DeepSeek ou Groq):
+
+   ```bash
+   git clone https://github.com/Duzeck/duzecklaw.git
+   cd duzecklaw
+   npm install
+   cp .env.example .env   # no Windows: copy .env.example .env; depois preencha o token e a API key
+   ```
+
+2. Clone este repositório na pasta de skills do bot:
+
+   ```bash
+   git clone https://github.com/Duzeck/skills.git .agents/skills
+   ```
+
+3. Instale as dependências Python usadas pelos scripts das skills (já listadas no `requirements.txt` do DuzeckClaw) e inicie o bot:
+
+   ```bash
+   pip install -r requirements.txt
+   npm run dev
+   ```
+
+Para atualizar as skills depois, rode `git -C .agents/skills pull`. O DuzeckClaw relê a pasta a cada mensagem, então skills novas ou atualizadas valem na hora, sem reiniciar o bot.
+
+Algumas skills dependem desse ambiente: `gerar-pdf` envia o PDF pelo Telegram, `resumo-audio-video` lê as mídias que o bot salva em `workspace/midias/` e usa a variável `WORKSPACE_DIR`, e `prd-manager` devolve os documentos no bloco de arquivo do bot. Em outros agentes os scripts continuam rodando pela linha de comando; veja o README de cada skill.
+
+## Instalação no Claude Code
 
 Clone o repositório:
 
@@ -96,6 +122,7 @@ skills/
 
 Feitas principalmente para:
 
+- [DuzeckClaw](https://github.com/Duzeck/duzecklaw)
 - Claude Code
 - Apps do Claude (claude.ai) com skills habilitadas
 - Outros agentes compatíveis com o formato Agent Skills

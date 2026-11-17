@@ -2,6 +2,8 @@
 
 Skill que converte conteúdo em Markdown em um PDF estruturado e o envia pelo Telegram.
 
+Feita para o [DuzeckClaw](https://github.com/Duzeck/duzecklaw), agente pessoal controlado pelo Telegram: lá o PDF chega como anexo no chat. Para instalar, veja [Usando com o DuzeckClaw](../README.pt-BR.md#usando-com-o-duzeckclaw-telegram). Fora dele, o script roda sozinho pela linha de comando (veja "Uso manual").
+
 ## Requisitos
 
 - Python 3.9+

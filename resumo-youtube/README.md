@@ -2,6 +2,8 @@
 
 Skill para resumir vídeos do YouTube a partir de um link, com metadados e timestamps, em português do Brasil.
 
+Funciona no [DuzeckClaw](https://github.com/Duzeck/duzecklaw) (basta mandar o link no Telegram) e no Claude Code. Para instalar no DuzeckClaw, veja [Usando com o DuzeckClaw](../README.pt-BR.md#usando-com-o-duzeckclaw-telegram).
+
 ## Requisitos
 
 - Python 3.9+

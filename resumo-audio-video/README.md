@@ -2,6 +2,8 @@
 
 Skill que transcreve áudios e vídeos com Whisper local e entrega um resumo estruturado em PDF (via skill `gerar-pdf`).
 
+Feita para o [DuzeckClaw](https://github.com/Duzeck/duzecklaw), agente pessoal controlado pelo Telegram: você envia o áudio, vídeo ou link no chat e recebe o resumo em PDF. Para instalar, veja [Usando com o DuzeckClaw](../README.pt-BR.md#usando-com-o-duzeckclaw-telegram). "O bot", nas seções abaixo, é o DuzeckClaw.
+
 ## Requisitos
 
 - Python 3.9+

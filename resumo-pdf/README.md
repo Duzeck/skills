@@ -2,6 +2,8 @@
 
 Skill para extrair texto de PDFs (nativos ou escaneados, via OCR) e gerar resumo estruturado em português do Brasil.
 
+Funciona no [DuzeckClaw](https://github.com/Duzeck/duzecklaw) (basta mandar o PDF no Telegram) e no Claude Code. Para instalar no DuzeckClaw, veja [Usando com o DuzeckClaw](../README.pt-BR.md#usando-com-o-duzeckclaw-telegram).
+
 ## Arquivos
 
 - `SKILL.md` — instruções da skill (fluxo, formato do resumo, regras, casos de borda)
