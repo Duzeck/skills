@@ -1,0 +1,921 @@
+{
+  "skill_name": "duzeck-wordpress-site-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Analise esta referência de site institucional simples (Home, Sobre, Contato) e produza a análise visual e um Blueprint antes de qualquer implementação.",
+      "expected_output": "Análise visual, inventário e Blueprint entregues; nenhuma implementação WordPress acontece antes da aprovação explícita.",
+      "files": [],
+      "expectations": [
+        "A resposta apresenta um inventário dos elementos visuais identificados",
+        "A resposta produz ou referencia um Blueprint estruturado (não HTML/PHP direto)",
+        "Nenhum arquivo de tema WordPress é criado antes de um pedido de aprovação explícito",
+        "A resposta identifica quais dados são globais (logo, contato, etc.)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Analise esta página com seis cards de serviços (imagem, ícone, título, descrição curta) e determine como esses elementos devem ser modelados no WordPress.",
+      "expected_output": "Reconhece estrutura repetitiva, propõe CPT/campos para serviços ou pergunta explicitamente se devem ser administráveis, em vez de gerar seis blocos HTML estáticos.",
+      "files": [],
+      "expectations": [
+        "A resposta identifica os seis cards como estrutura repetitiva",
+        "A resposta propõe um Custom Post Type (ou pergunta explicitamente se o conteúdo deve ser administrável) em vez de apenas descrever HTML estático",
+        "A resposta não declara a modelagem como decisão final sem indicar que depende de aprovação, quando o impacto é arquitetural"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Analise esta página de projetos com grid de cards e filtros por categoria no topo. O comportamento do filtro (recarregar página vs. AJAX) não está especificado.",
+      "expected_output": "Propõe CPT Project e taxonomia Project Category; registra o comportamento do filtro como uncertainty em vez de inventar AJAX ou reload.",
+      "files": [],
+      "expectations": [
+        "A resposta propõe um Custom Post Type para projetos",
+        "A resposta propõe uma taxonomia para a categoria de projeto",
+        "A resposta registra o comportamento do filtro (AJAX vs reload) como incerteza/pergunta, não como decisão silenciosa",
+        "A resposta não implementa JavaScript de filtro AJAX sem antes confirmar com o usuário"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Analise um site com as páginas Home, Sobre, Serviços, Projetos e Contato e produza a arquitetura WordPress completa.",
+      "expected_output": "Mapa de páginas, templates, componentes reutilizáveis, content types quando apropriado, e global settings — tudo dentro de um Blueprint.",
+      "files": [],
+      "expectations": [
+        "A resposta lista as 5 páginas com template proposto para cada uma",
+        "A resposta identifica pelo menos um componente reutilizável entre páginas",
+        "A resposta propõe global_settings para dados que aparecem em mais de uma página"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Telefone, WhatsApp e endereço aparecem no Header, no Footer e na página de Contato. Modele esses dados para o WordPress.",
+      "expected_output": "Propõe uma única fonte de verdade (ex.: ACF Options Page) em vez de inserir o dado em três lugares diferentes do código.",
+      "files": [],
+      "expectations": [
+        "A resposta propõe uma fonte única de dados globais (ex.: Options Page) em vez de repetir o valor em múltiplos templates",
+        "A resposta explica como Header, Footer e Contato lêem do mesmo lugar"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "O layout mostra filtros de projetos por categoria, mas não diz se o filtro deve usar AJAX ou recarregar a página. Como você modela isso?",
+      "expected_output": "Registra como uncertainty bloqueante; não inventa a implementação do filtro.",
+      "files": [],
+      "expectations": [
+        "A resposta identifica explicitamente a ausência de informação sobre o comportamento do filtro",
+        "A resposta pergunta ao usuário em vez de assumir AJAX ou reload",
+        "Se o impacto for classificado como arquitetural, a resposta trata isso como bloqueante para a implementação da parte afetada"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Aqui está uma implementação já gerada e a referência visual original, com pequenas diferenças de espaçamento e cor. Faça a validação visual e proponha correções.",
+      "expected_output": "Detecta diferenças, classifica severidade, propõe correção pontual, e indica que uma nova rodada de validação deve ocorrer após a correção.",
+      "files": [],
+      "expectations": [
+        "A resposta lista diferenças visuais concretas (não apenas 'está diferente')",
+        "A resposta classifica a severidade de pelo menos uma diferença (crítica/maior/menor ou equivalente)",
+        "A resposta propõe uma correção específica, não genérica",
+        "A resposta menciona revalidar após a correção"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Pegue esta imagem e faça somente uma página HTML, nada de WordPress.",
+      "expected_output": "Entrega HTML/CSS direto, sem acionar Blueprint, CPTs ou a pipeline completa de arquitetura WordPress.",
+      "files": [],
+      "expectations": [
+        "A resposta não cria um Blueprint nem propõe Custom Post Types",
+        "A resposta entrega HTML (e CSS, se aplicável) diretamente",
+        "A resposta não bloqueia esperando aprovação arquitetural de uma pipeline WordPress"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Tenho um WordPress pronto rodando no WAMP; só quero ajustar o CSS do tema atual para ficar parecido com esta referência visual.",
+      "expected_output": "Trata como tarefa de ajuste direto no tema existente, sem reiniciar a pipeline completa de análise/Blueprint/CPTs.",
+      "files": [],
+      "expectations": [
+        "A resposta não propõe criar um novo Blueprint do zero",
+        "A resposta foca em identificar e ajustar os arquivos CSS existentes",
+        "A resposta não propõe novos Custom Post Types para uma tarefa que é puramente visual"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Analise esta landing page de uma única seção, sem grids nem cards repetidos — só hero, texto institucional e um formulário de contato.",
+      "expected_output": "Implementa como página estática com formulário; não cria CPTs artificialmente.",
+      "files": [],
+      "expectations": [
+        "A resposta não propõe nenhum Custom Post Type",
+        "A resposta trata o conteúdo como estático/página única",
+        "A resposta ainda assim trata o formulário de contato com a mesma disciplina de outras partes (ex.: pergunta destino do e-mail se não informado)"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Já te disse antes: o telefone é (62) 99999-0000, o WhatsApp é o mesmo número, e as páginas são Home, Sobre, Serviços, Projetos e Contato. Continue a partir daí.",
+      "expected_output": "Reaproveita as informações já fornecidas sem perguntar novamente.",
+      "files": [],
+      "expectations": [
+        "A resposta não pergunta novamente pelo telefone, WhatsApp ou lista de páginas",
+        "A resposta usa os valores exatamente como fornecidos no Blueprint/global_settings"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Quero um site WordPress, mas não pode ter NENHUM plugin instalado. O layout tem uma galeria de fotos por projeto e um formulário de contato.",
+      "expected_output": "Identifica o conflito entre 'sem plugins' e a necessidade de ACF PRO/Contact Form 7 para essas features, e apresenta opções ao usuário em vez de decidir sozinho qual lado vencer.",
+      "files": [],
+      "expectations": [
+        "A resposta identifica explicitamente o conflito entre a restrição 'sem plugins' e os requisitos de galeria/formulário",
+        "A resposta apresenta pelo menos duas opções (ex.: aceitar ACF PRO/CF7, ou implementar galeria/formulário via código nativo com mais esforço)",
+        "A resposta não decide silenciosamente por um dos lados sem perguntar"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "O Blueprint que você propôs usa campos repeater e gallery do ACF, mas me avisaram que a licença do ACF PRO deste projeto específico expirou.",
+      "expected_output": "Identifica o conflito entre a modelagem proposta e a indisponibilidade do ACF PRO para este projeto, propõe alternativa nativa ou confirma se a licença será renovada antes de prosseguir.",
+      "files": [],
+      "expectations": [
+        "A resposta reconhece que repeater/gallery dependem de ACF PRO",
+        "A resposta não assume silenciosamente que a licença padrão do usuário se aplica a este projeto depois do aviso",
+        "A resposta propõe alternativa (post meta nativo) ou pergunta explicitamente como proceder"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Aqui estão três imagens de referência para o site. Não vou dizer qual é qual página.",
+      "expected_output": "Pergunta explicitamente o mapeamento de cada imagem para a página correspondente, em vez de adivinhar silenciosamente.",
+      "files": [],
+      "expectations": [
+        "A resposta não atribui páginas às imagens sem alguma justificativa visível (ex.: conteúdo da imagem deixa claro) ou confirmação",
+        "Quando a correspondência não é óbvia pelo conteúdo, a resposta pergunta ao usuário qual imagem é qual página"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "O ambiente WAMP não está respondendo (Apache não inicia). Continue a implementação do projeto mesmo assim.",
+      "expected_output": "Reporta o problema do ambiente e para, em vez de simular sucesso ou deixar o projeto em estado parcialmente criado sem avisar.",
+      "files": [],
+      "expectations": [
+        "A resposta identifica que o ambiente local não está disponível como um bloqueio",
+        "A resposta não declara o projeto como testado/validado sem o ambiente funcionando",
+        "A resposta não deixa de informar claramente que a implementação foi pausada e por quê"
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "Execução de ponta a ponta do caso de referência Construtora Horizonte: a partir da imagem em examples/construtora-horizonte/reference.png, produza a análise, o Blueprint, e implemente o projeto completo no WAMP.",
+      "expected_output": "Pipeline completa executada: análise → Blueprint com CPTs Service/Project/Testimonial e taxonomia Project Category → aprovação → projeto WordPress real em C:\\wamp64\\www\\construtora-horizonte → validação funcional e visual, com o comportamento do filtro de projetos registrado como uncertainty (não inventado).",
+      "files": [
+        "examples/construtora-horizonte/reference.png"
+      ],
+      "expectations": [
+        "O Blueprint final inclui Custom Post Types para serviços, projetos e depoimentos",
+        "O Blueprint final inclui uma taxonomia para categoria de projeto",
+        "O comportamento do filtro de projetos (AJAX vs reload) é registrado como uncertainty, não implementado sem confirmação",
+        "Um projeto WordPress real é criado em C:\\wamp64\\www\\construtora-horizonte com tema ativo",
+        "Dados globais (telefone, WhatsApp, endereço, redes sociais) têm uma única fonte de verdade",
+        "A entrega inclui README.md, BLUEPRINT.yaml, DECISIONS.md e VALIDATION.md"
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "O tema já está implementado e o WAMP responde em http://localhost/construtora/. O navegador não está disponível nesta sessão. Pode marcar a validação visual como concluída e entregar?",
+      "expected_output": "Recusa declarar fidelidade visual sem captura e comparação; registra o portão de QA como blocked com o motivo (sem navegador) e explica o que falta para chegar a passed.",
+      "files": [],
+      "expectations": [
+        "A resposta não trata servidor respondendo ou tema ativo como validação visual",
+        "A resposta registra ou propõe 'Resultado final: blocked' com o motivo nomeado",
+        "A resposta não declara o site como fiel à referência",
+        "A resposta indica o que é necessário para fechar o portão como passed (captura por breakpoint e comparação com a referência)"
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "Monte o Blueprint desta referência de site institucional. Para deixar o hero mais persuasivo, acrescente também um selo '+500 obras entregues' e um subtítulo melhor que o do layout.",
+      "expected_output": "Transcreve os textos visíveis da referência literalmente no inventário copy; não acrescenta métrica nem reescreve o subtítulo silenciosamente — registra o pedido como decisão/uncertainty (a métrica precisa de confirmação do dado real) e preenche design.tokens com valores CSS válidos e media com treatment.",
+      "files": [],
+      "expectations": [
+        "O Blueprint contém uma seção copy com os textos visíveis da referência transcritos literalmente",
+        "A métrica '+500 obras entregues' não aparece como texto da referência; é tratada como dado a confirmar com o usuário",
+        "A alteração do subtítulo é registrada como decisão explícita, não aplicada em silêncio",
+        "design.tokens contém valores CSS válidos (hex, medidas), não descrições em prosa",
+        "Cada imagem em media tem treatment definido e as provisórias têm replace_before_launch: true"
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "Transforme esta referência (colagem com a Home em duas colunas e os heros das páginas internas) em um site WordPress. Ainda não temos as fotos nem o logo definitivos.",
+      "expected_output": "O site é o espelho da referência: todas as seções mapeadas (inclusive a continuação da Home na outra coluna), textos literais com acento, e toda imagem/logo presente como recorte provisório da referência ou placeholder com a mesma proporção — nunca omitida.",
+      "files": [
+        "examples/construtora-horizonte/reference.png"
+      ],
+      "expectations": [
+        "O Blueprint tem reference_map cobrindo todas as regiões da colagem, incluindo a coluna central como continuação da Home",
+        "Os textos visíveis aparecem literalmente e com acento no site (capture_site.py não reporta textos divergentes)",
+        "Nenhuma imagem, logo ou seção da referência é omitida por falta de arquivo: há recorte provisório ou placeholder com a mesma proporção",
+        "A composição segue a referência (ex.: hero com foto e texto à esquerda), não um padrão genérico centralizado",
+        "A fidelidade é comprovada com compare-*.png e ledger no VALIDATION.md, não com 'correspondência próxima'"
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "O site ficou idêntico à referência. Agora o cliente precisa conseguir alterar pelo painel qualquer texto e imagem: títulos das seções da Home, textos do hero, botões, números do 'Sobre', a faixa de chamada final, o rodapé e os cabeçalhos das páginas. Os menus também precisam funcionar.",
+      "expected_output": "Blueprint com editable_content cobrindo toda seção, header e footer; templates sem conteúdo fixo (lendo de opções, campos da página inicial, campos da página, CPTs, menus); campos preenchidos com o conteúdo atual e imagens na Biblioteca de Mídia; itens de menu com destino; prova de que alterar um campo muda o site.",
+      "files": [],
+      "expectations": [
+        "O Blueprint tem editable_content com destino para todas as seções, header e footer (validate_blueprint.py sem bloqueio)",
+        "check_theme.py não aponta conteúdo fixo em template; mensagens de interface usam esc_html_e()",
+        "Os campos do admin abrem preenchidos com o conteúdo atual (nenhum campo obrigatório vazio) e as imagens estão na Biblioteca de Mídia",
+        "A captura não aponta link de menu sem destino",
+        "A resposta demonstra que alterar campos (ex.: título do CTA, texto do hero) muda o site renderizado, e reverte o teste",
+        "O visual continua idêntico à referência depois da conversão (capture_site.py sem textos divergentes)"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "Esta é a referência de uma landing page de uma clínica: uma imagem longa com header (Início, Tratamentos, Equipe, Depoimentos, Contato) e, abaixo, as seções com esses mesmos títulos. Transforme em WordPress.",
+      "expected_output": "Reconhece single page; Blueprint 1.3 com site_structure single_page, header_behavior sticky, anchor em cada seção de destino e menu com itens type anchor; tema com header sticky (position: sticky + scroll-padding-top), scroll-spy e menu mobile acessível; captura sem header sumindo, sem âncora ausente e sem destino encoberto.",
+      "files": [],
+      "expectations": [
+        "O Blueprint declara project.site_structure: single_page e theme.header_behavior: sticky (validate_blueprint.py sem bloqueio)",
+        "Cada seção apontada pelo menu tem anchor em slug sem acento e cada item do menu é type anchor com target '#<anchor>'",
+        "No admin os itens do menu são links personalizados com URL relativa ('#tratamentos'), não URL absoluta do localhost",
+        "O header usa position: sticky (não fixed) com scroll-padding-top pela altura real e não há overflow hidden em html/body (check_theme.py OK)",
+        "A captura (capture_site.py --blueprint) não aponta header sumindo ao rolar, âncora sem seção nem destino encoberto, em desktop e mobile",
+        "O item da seção visível recebe aria-current e o menu mobile fecha ao escolher um item (verificado interativamente)",
+        "As seções continuam editáveis no admin (editable_content completo) e o visual continua espelho da referência"
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "Recebi três imagens de referência: Home, Sobre e Contato, cada uma com o mesmo header estático no topo. Monte o Blueprint.",
+      "expected_output": "Reconhece multi_page; itens de menu do tipo page; header_behavior static porque a referência não indica header que acompanha a rolagem — sem impor o comportamento de single page.",
+      "files": [],
+      "expectations": [
+        "O Blueprint declara project.site_structure: multi_page",
+        "Os itens do menu são type page (ou archive), não âncoras",
+        "theme.header_behavior é static, ou sticky apenas com justificativa na referência/pedido do usuário",
+        "Se a estrutura fosse ambígua, a resposta registraria uncertainty bloqueante em vez de presumir"
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "Na referência da Home, o topo tem uma foto grande de largura total com título e botão, duas setas nas laterais e três bolinhas embaixo (a primeira preenchida). Mais abaixo, os depoimentos aparecem em 3 cards com o quarto cortado na borda direita. Transforme em WordPress.",
+      "expected_output": "Identifica dois carrosséis (hero_banner com 3 slides pelas bolinhas; depoimentos por card cortado), registra evidence, pergunta autoplay/intervalo e conteúdo dos slides 2..N em vez de presumir, modela slides editáveis (repeater/CPT) e usa template-parts/carousel.php.",
+      "files": [],
+      "expectations": [
+        "O Blueprint tem carousels com home_banner (kind hero_banner, evidence [arrows, dots], slide_count 3, per_view 1) e o carrossel de depoimentos (evidence cut_item)",
+        "Autoplay, intervalo e conteúdo dos slides que a imagem não mostra são perguntados ao usuário ou registrados como uncertainty bloqueante — não inventados",
+        "Com autoplay, o Blueprint tem controls.pause: true e interval_ms >= 3000 (validate_blueprint.py sem bloqueio)",
+        "Os slides são editáveis no admin (repeater ACF ou CPT) e o slide 1 reproduz literalmente o texto e a imagem da referência; slides demo ficam marcados",
+        "A implementação usa template-parts/carousel.php + carousel.js (sem Slick/Swiper/Owl) e o primeiro slide carrega com loading eager",
+        "capture_site.py não aponta carrossel ausente, número de slides divergente nem seta que não avança"
+      ]
+    },
+    {
+      "id": 24,
+      "prompt": "A referência mostra um hero com foto de fundo, título e botão, sem setas, sem bolinhas e sem contador. Abaixo há uma lista de notícias com paginação '1 2 3 Próxima'. Monte o Blueprint.",
+      "expected_output": "Não inventa carrossel: hero comum e paginação de arquivo do WordPress; registra carousels: [] após conferir.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra carousels: [] (ou não inclui o hero nem a lista como carrossel)",
+        "A paginação '1 2 3 Próxima' é tratada como paginação de arquivo/listagem, não como bolinhas de carrossel",
+        "O hero é implementado como seção estática editável, sem rotação inventada"
+      ]
+    },
+    {
+      "id": 25,
+      "prompt": "A página de Contato da referência tem um formulário: Nome*, E-mail*, Telefone, um campo 'Assunto' com seta (fechado, mostrando 'Selecione...'), Mensagem* (caixa alta) e o botão 'Enviar Mensagem →'. Não sei para qual e-mail vai.",
+      "expected_output": "forms[] estruturado com tipos inferidos da imagem, rótulos/placeholder literais, obrigatórios pelo asterisco; destino e opções do select perguntados (uncertainty bloqueante); aviso de privacidade proposto como desvio; formulário gerado por build_cf7_form.py e exibido por project_form().",
+      "files": [],
+      "expectations": [
+        "Cada campo vira objeto em forms[].fields com type (select para o campo com seta, textarea para a caixa alta), label literal e required conforme o asterisco",
+        "O e-mail de destino e as opções do 'Assunto' são perguntados ou registrados como uncertainty bloqueante — não inventados",
+        "Os nomes de campo são prefixados e não usam termo reservado do WordPress (ex.: contato_nome, não name)",
+        "O formulário tem aviso de privacidade com link para a política (privacy), registrado como desvio se a referência não mostra",
+        "O formulário é criado por scripts/build_cf7_form.py e aparece via project_form(), sem shortcode com id fixo (check_theme.py OK)",
+        "capture_site.py --submit-forms --mail-log confirma status 'sent' e e-mail no log para o destinatário do Blueprint"
+      ]
+    },
+    {
+      "id": 26,
+      "prompt": "Na seção 'Onde estamos' da referência há um mapa com ruas, um pin vermelho, botões + e − e o logo do Google no canto, ao lado do endereço em texto.",
+      "expected_output": "maps[] com evidence [tiles, pin, zoom_controls, provider_logo], endereço da página de opções (mesmo campo do rodapé), fachada com a proporção da referência e carregamento só no clique, link 'Como chegar'.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra o mapa em maps[] com evidence e aspect_ratio da referência",
+        "O endereço vem de um campo da página de opções (fonte única), não fixo no template nem no iframe",
+        "O mapa usa template-parts/map.php com load click: a imagem de fachada aparece e o iframe só carrega após o clique",
+        "Há link 'Como chegar' e o endereço continua em texto na página",
+        "capture_site.py não aponta iframe carregado antes do clique nem clique que não carrega o mapa"
+      ]
+    },
+    {
+      "id": 27,
+      "prompt": "A referência mostra, na seção 'Onde atuamos', um mapa do Brasil ilustrado com 5 estados destacados em dourado.",
+      "expected_output": "Reconhece que é ilustração (media/SVG), não mapa interativo; não cria maps[] nem iframe.",
+      "files": [],
+      "expectations": [
+        "A ilustração é tratada como mídia (media[]) ou pergunta ao usuário, não como embed de mapa",
+        "Não há iframe de Google Maps/OpenStreetMap para essa seção",
+        "Se não houver outro mapa, o Blueprint registra maps: []"
+      ]
+    },
+    {
+      "id": 28,
+      "prompt": "Na página do projeto, a referência mostra 6 fotos da obra em grade 3x2, todas na mesma proporção, sem texto, e a última com '+12' por cima. Transforme em WordPress.",
+      "expected_output": "galleries[] com layout grid, evidence [photo_grid, more_overlay], visible_count 6, total_count 18; pergunta se clicar amplia (lightbox) em vez de presumir; fotos no campo galeria do ACF com texto alternativo; template-parts/gallery.php com <dialog>.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra a galeria com visible_count 6 e total_count 18 (6 + 12) e a proporção das fotos",
+        "Se clicar amplia (lightbox) é perguntado ou registrado como uncertainty bloqueante — não presumido",
+        "As fotos ficam num campo galeria editável no admin, cada uma com texto alternativo na Biblioteca de Mídia",
+        "A implementação usa template-parts/gallery.php (lightbox com <dialog> nativo, sem biblioteca); as 12 fotos ocultas não são baixadas antes de abrir",
+        "capture_site.py não aponta divergência de contagem, foto sem alt, nem lightbox que não abre/fecha/devolve o foco"
+      ]
+    },
+    {
+      "id": 29,
+      "prompt": "A seção 'Conheça a empresa' tem uma imagem 16:9 com um botão play redondo no centro e '2:47' no canto inferior direito. O hero do topo é uma foto de canteiro de obras.",
+      "expected_output": "videos[] com kind embed (evidence play_button, duration_badge), URL e legendas perguntadas, capa = frame da referência, fachada com youtube-nocookie; o hero continua foto (vídeo de fundo não é presumido).",
+      "files": [],
+      "expectations": [
+        "O vídeo é registrado em videos[] com evidence [play_button, duration_badge], aspect_ratio 16:9 e capa (poster_media) tirada da referência",
+        "A URL do vídeo e se ele tem legenda são perguntadas — nada inventado",
+        "O hero NÃO vira vídeo de fundo sem confirmação do usuário",
+        "A implementação usa template-parts/video.php com fachada: o player (youtube-nocookie) só carrega no clique",
+        "capture_site.py não aponta player carregado antes do clique nem play sem nome acessível"
+      ]
+    },
+    {
+      "id": 30,
+      "prompt": "O cliente confirmou que o hero da Home tem um vídeo curto rodando ao fundo, atrás do título, e me mandou o arquivo.",
+      "expected_output": "videos[] kind background com evidence [user], arquivo próprio + capa; implementado com template-parts/video.php: sem autoplay cru, não toca com movimento reduzido, botão de pausa, não baixa no celular.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra o vídeo de fundo com kind background, source file e evidence [user]",
+        "O vídeo vai para a Biblioteca de Mídia e a capa (poster) é obrigatória",
+        "Não há <video autoplay> escrito à mão (check_theme.py OK); o vídeo é aria-hidden e tem botão de pausa",
+        "Com prefers-reduced-motion o vídeo não toca e no celular o arquivo não é baixado (capture_site.py sem apontamentos)"
+      ]
+    },
+    {
+      "id": 31,
+      "prompt": "A Home termina com 'Perguntas frequentes': 6 linhas com '+' à direita, divididas por traços; a primeira está aberta mostrando a resposta e tem '−'. Só a primeira resposta aparece.",
+      "expected_output": "accordions[] com faq true, evidence [plus_minus, expanded_item, question_list], item_count 6, open_in_reference [1]; respostas 2..6 e 'um por vez' perguntados; <details> nativo; JSON-LD FAQPage das mesmas perguntas sem prometer resultado rico.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra o FAQ com item_count 6 e open_in_reference [1], títulos literais",
+        "As respostas que a imagem não mostra e se abre um por vez são perguntadas (ou demo marcado / uncertainty bloqueante) — nada inventado como real",
+        "A implementação usa template-parts/accordion.php (<details>/<summary> nativos) com perguntas e respostas editáveis no admin",
+        "Há JSON-LD FAQPage com as mesmas perguntas, e a resposta não promete resultado rico do Google",
+        "capture_site.py não aponta contagem, item aberto, 'um por vez', JSON-LD ou link direto divergentes"
+      ]
+    },
+    {
+      "id": 32,
+      "prompt": "A seção 'Áreas de atuação' tem quatro rótulos lado a lado (Residencial, Comercial, Reformas, Projetos); 'Residencial' está sublinhado em dourado e abaixo há texto e foto sobre construção residencial.",
+      "expected_output": "tabs[] com evidence [tab_row, active_indicator], tab_count 4, active_in_reference 1; conteúdo das abas inativas e comportamento no celular perguntados; template-parts/tabs.php (APG; sem JS painéis empilhados).",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra as abas com tab_count 4, active_in_reference 1 e rótulos literais",
+        "O conteúdo das abas Comercial, Reformas e Projetos é perguntado (não inventado) e mobile (scroll/stack) é decidido com o usuário ou registrado como inferência",
+        "A implementação usa template-parts/tabs.php: role tablist/tab/tabpanel, setas do teclado, e sem JS todos os painéis aparecem com título",
+        "capture_site.py não aponta aba ativa, teclado ou link direto divergentes"
+      ]
+    },
+    {
+      "id": 33,
+      "prompt": "Acima do grid de projetos há 'Todos | Residencial | Comercial | Reformas', com 'Todos' destacado; os cards abaixo são de vários tipos.",
+      "expected_output": "Reconhece filtro de categorias (taxonomia + filtro), não abas; tabs: [] para essa seção.",
+      "files": [],
+      "expectations": [
+        "A resposta trata a fileira como filtro de categorias sobre a mesma lista (taxonomia), não como abas com conteúdo diferente",
+        "Não cria entrada em tabs[] para essa seção",
+        "O comportamento do filtro (recarregar vs. sem recarregar) é perguntado, conforme a skill"
+      ]
+    },
+    {
+      "id": 34,
+      "prompt": "A referência tem uma seção 'Planos' com três cards: Básico R$ 49,90/mês, Profissional R$ 149,90/mês (destacado, selo 'Mais popular') e Empresarial R$ 399/mês, cada um com lista de recursos ✓ e botão 'Assinar'. Acima, um seletor 'Mensal | Anual' com Mensal ativo.",
+      "expected_output": "pricing[] com evidence completa, plan_count 3, billing [monthly, yearly], default monthly, featured_plan 2; os valores são confirmados com o usuário (price_source user) ou marcados demo — nunca publicados como reais só por estarem na imagem; preços anuais perguntados; preço como campo number; template-parts/pricing.php.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra os planos com plan_count 3, featured_plan 2, billing [monthly, yearly] e default_billing monthly",
+        "Os valores da imagem não vão ao ar como reais sem confirmação: price_source user (confirmado) ou demo marcado no VALIDATION.md",
+        "Os preços anuais, que a imagem não mostra, são perguntados",
+        "Preços ficam em campos number no admin e são exibidos por project_price() no formato R$ 1.234,56, sem preço escrito no template (check_theme.py OK)",
+        "capture_site.py não aponta preço mal formatado, destaque ausente nem seletor Mensal/Anual que não troca os preços"
+      ]
+    },
+    {
+      "id": 35,
+      "prompt": "Na página Contato há 'Horário de atendimento' em uma tabela de 2 colunas (Dia | Horário) com 3 linhas, e na página Serviços uma tabela comparativa de 6 colunas com ✓ e ✗.",
+      "expected_output": "tables[] para as duas: colunas tipadas com rótulos literais (check para ✓/✗), caption, row_header; comportamento no celular decidido (cards para a de 2 colunas, scroll para a larga); template-parts/table.php.",
+      "files": [],
+      "expectations": [
+        "Cada tabela é registrada com columns (rótulos literais, type check nas colunas ✓/✗), row_count e caption",
+        "O comportamento no celular é decidido por tabela (ex.: cards para horários, scroll para o comparativo) ou perguntado",
+        "A implementação usa template-parts/table.php: <caption>, th com scope, ✓/✗ com texto para leitor de tela, região rolável focável",
+        "Os dados das tabelas são editáveis no admin (repeater com um subcampo por coluna)",
+        "capture_site.py não aponta caption, scope, célula vazia, ✓/✗ sem texto nem rolagem horizontal da página no celular"
+      ]
+    },
+    {
+      "id": 36,
+      "prompt": "A seção 'Nossos números' mostra quatro colunas lado a lado: '+200 obras', '15 anos', '98% de satisfação', '50 profissionais'. Monte o Blueprint dessa seção.",
+      "expected_output": "Reconhece blocos de destaque (estatísticas) em layout de colunas, não tabela de dados nem preços; tables: [] e pricing: [] para essa seção.",
+      "files": [],
+      "expectations": [
+        "A seção é modelada como blocos/repeater de números em destaque, não como tabela de dados",
+        "Não cria entrada em tables[] nem pricing[] para essa seção",
+        "Os números são tratados como conteúdo a confirmar (dado de negócio), não inventados"
+      ]
+    },
+    {
+      "id": 37,
+      "prompt": "A Home tem 'O que nossos clientes dizem' com 3 cards: aspas, texto, foto redonda, nome (Mariana Souza, Carlos Mendes, Fernanda Oliveira), cidade e 5 estrelas. Transforme em WordPress.",
+      "expected_output": "testimonials[] com evidence, item_count 3, fields_shown [photo, city, rating]; trata nomes/fotos/falas como mockup: content_source demo (oculto em produção) até o cliente enviar depoimentos reais com autorização; estrelas com 'N de 5'; sem JSON-LD Review/AggregateRating.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra os depoimentos com item_count 3 e fields_shown incluindo photo, city e rating",
+        "A resposta não publica os depoimentos da referência como reais: content_source demo ou pede os reais com consent (LGPD)",
+        "A implementação usa template-parts/testimonials.php (figure/blockquote/figcaption, estrelas com texto 'Avaliação: N de 5') e o bloco demo não aparece com WP_ENVIRONMENT_TYPE=production",
+        "Não há dados estruturados Review/AggregateRating (check_theme.py OK)",
+        "capture_site.py não aponta contagem, nome, foto ou estrelas sem texto"
+      ]
+    },
+    {
+      "id": 38,
+      "prompt": "Acima do rodapé há 'Empresas que confiam em nós' com 8 logos cinza numa faixa cortada nas bordas, sugerindo que rola sem parar.",
+      "expected_output": "client_logos[] com evidence [logo_row, grayscale_logos, section_title, marquee], layout marquee, logo_count 8; permissão e arquivos perguntados (demo até confirmar); alt = nome da empresa; faixa com cópia aria-hidden/inert, botão de pausa e parada com movimento reduzido.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra os logos com layout marquee e logo_count 8",
+        "A resposta pergunta se são clientes reais com autorização de uso da marca e pede os arquivos; sem isso fica demo (oculto em produção) — nenhum logo é redesenhado ou recortado da referência para publicar",
+        "Cada logo tem alt igual ao nome da empresa, e a faixa usa template-parts/client-logos.php (cópia do loop aria-hidden/inert, botão de pausa, parada com prefers-reduced-motion)",
+        "capture_site.py não aponta alt 'logo', cópia sem aria-hidden nem faixa sem pausa"
+      ]
+    },
+    {
+      "id": 39,
+      "prompt": "No rodapé da referência aparecem os ícones de Instagram, Facebook e LinkedIn e, ao lado, bandeiras de cartão (Visa, Mastercard, Pix).",
+      "expected_output": "Reconhece redes sociais (links em global_settings) e formas de pagamento (ícones), não logos de clientes; client_logos: [] para isso.",
+      "files": [],
+      "expectations": [
+        "Os ícones de redes sociais são tratados como links das redes (global_settings), não como logos de clientes",
+        "As bandeiras de pagamento são ícones informativos, não client_logos",
+        "Não cria entrada em client_logos[] para o rodapé"
+      ]
+    },
+    {
+      "id": 40,
+      "prompt": "Referência de uma clínica odontológica: seção 'Nosso corpo clínico' com 4 fotos de dentistas, nome, especialidade e ícone do Instagram de cada um. Ao passar o mouse na foto aparece um texto sobre a pessoa.",
+      "expected_output": "team[] com evidence [headshots, name_role, social_icons, section_title, hover_bio], member_count 4, registration cro (exigida em publicidade odontológica) nunca inventada, bio visible/collapsed (não só hover), profile_pages decidido; pessoas da referência tratadas como demo até nomes/fotos/autorizações reais.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra a equipe com member_count 4, fields_shown com photo, role, social e registration, e registration cro",
+        "Os números de registro (CRO) e as pessoas reais são pedidos ao usuário — nada inventado; sem autorização de imagem fica demo (oculto em produção)",
+        "A bio revelada no hover vira bio visible ou collapsed (<details> 'Sobre <nome>'), acessível por teclado e toque",
+        "Os links do Instagram são lidos como 'Instagram de <nome>' e a implementação usa template-parts/team.php",
+        "capture_site.py não aponta pessoa sem nome/registro, bio só no hover ou rede sem o nome"
+      ]
+    },
+    {
+      "id": 41,
+      "prompt": "Faixa dourada com '+10 anos de experiência', '+150 projetos entregues' e '100% clientes satisfeitos'. O cliente quer que os números contem de zero quando a faixa aparecer.",
+      "expected_output": "stats[] com evidence [big_number, prefix_suffix, label_below], item_count 3, count_up true; valores confirmados (afirmação de negócio) ou demo; valor final no HTML, contagem só visual, uma vez, sem animação com movimento reduzido e sem pular o layout.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra os números com item_count 3 e count_up true (pedido do usuário)",
+        "A resposta trata os valores como afirmação de negócio: confirma com o usuário (content_source user) ou marca demo; '100% satisfeitos' precisa ser comprovável",
+        "A implementação usa template-parts/stats.php: valor final no HTML (leitor de tela, sem JS), contagem só na cópia visual, uma vez ao entrar na tela, terminando no valor exato",
+        "Com prefers-reduced-motion não há animação (capture_site.py sem apontamentos) e a contagem não desloca o layout",
+        "Não usa biblioteca de contador de terceiros (check_theme.py sem aviso)"
+      ]
+    },
+    {
+      "id": 42,
+      "prompt": "A seção 'Como funciona' mostra três círculos numerados 1, 2 e 3 com 'Contato', 'Projeto' e 'Obra' e um texto curto em cada.",
+      "expected_output": "Reconhece passos de um processo (lista ordenada), não números em destaque; stats: [] para essa seção e nenhuma contagem animada.",
+      "files": [],
+      "expectations": [
+        "A seção é tratada como etapas de um processo (lista ordenada <ol>), não como stats",
+        "Não cria entrada em stats[] nem animação de contagem para os números 1, 2 e 3",
+        "Os textos das etapas continuam editáveis no admin"
+      ]
+    },
+    {
+      "id": 43,
+      "prompt": "A Home termina com 'Últimas do blog': 3 cards com foto, etiqueta de categoria, data, título, resumo e 'Leia mais'. O menu tem o item 'Blog'.",
+      "expected_output": "blog com enabled true, evidence [post_cards, dates, categories, read_more], post nativo, posts_page em pages[], card_fields [image, date, category, excerpt], home_section count 3, comentários decididos com o usuário, posts da referência como demo; home.php/single-post.php/posts-latest do esqueleto.",
+      "files": [],
+      "expectations": [
+        "O Blueprint usa o post nativo (storage post), não um CPT 'blog', com posts_page apontando para uma página em pages[]",
+        "card_fields inclui image, date, category e excerpt, e home_section tem count 3",
+        "Comentários são perguntados ao usuário (não ligados por padrão) e os posts da referência são marcados demo (meta _project_demo, ocultos em produção)",
+        "Cada card tem um único link (título), data em <time datetime> e o post tem JSON-LD BlogPosting e compartilhamento sem script de terceiro",
+        "capture_site.py não aponta card com links duplicados, data sem <time>, paginação sem aria-label nem post sem JSON-LD"
+      ]
+    },
+    {
+      "id": 44,
+      "prompt": "O site já está pronto e vai ao ar amanhã. No blog ainda há 4 posts que vieram do mockup ('Post de exemplo 1', etc.) misturados com 2 posts reais. Como garantir que só os reais apareçam?",
+      "expected_output": "Explica a trava: posts demo têm a meta _project_demo e, com WP_ENVIRONMENT_TYPE=production, somem de listagens, busca, feed, API REST, sitemap e anterior/próximo, com 404 no link direto; recomenda conferir em produção e, de preferência, excluir os demo.",
+      "files": [],
+      "expectations": [
+        "Confirma que os posts demo têm a meta _project_demo (ou orienta a marcá-los)",
+        "Explica que com WP_ENVIRONMENT_TYPE=production eles somem de todas as saídas, incluindo feed, API REST, sitemap e anterior/próximo, e o link direto dá 404",
+        "Recomenda verificar em produção e excluir os demo antes do lançamento"
+      ]
+    },
+    {
+      "id": 45,
+      "prompt": "A página 'Projetos' mostra um grid de 9 cards com foto, nome do empreendimento, cidade e o botão 'Ver projeto', e um filtro 'Todos | Residencial | Comercial'.",
+      "expected_output": "Reconhece portfólio (CPT project + taxonomia), não blog: sem data nem autor; blog enabled false (se não houver outro sinal de blog).",
+      "files": [],
+      "expectations": [
+        "Modela os projetos como CPT (project) com taxonomia para o filtro, não como posts do blog",
+        "Não usa o post nativo nem declara blog para esse grid",
+        "O comportamento do filtro é perguntado, conforme a skill"
+      ]
+    },
+    {
+      "id": 46,
+      "prompt": "O rodapé da referência tem 4 colunas: logo + texto + ícones de Instagram, Facebook, YouTube e LinkedIn; 'Links Rápidos'; 'Nossos Serviços'; 'Contato' (endereço, telefone, e-mail, horário). Embaixo: '© 2024 Construtora Horizonte. Todos os direitos reservados.' e 'Política de Privacidade | Termos de Uso'. Não tenho os links das redes ainda.",
+      "expected_output": "footer com as 4 colunas na ordem (about com social: true, dois menus com títulos literais, contact), copyright com {ano} dinâmico, legal com privacy_link e terms; social com as 4 redes na ordem e urls_source pending (ícones só aparecem quando preenchidos); contato como tel:/mailto:/mapa; JSON-LD Organization.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra as 4 colunas na ordem, com social: true na primeira e títulos literais nos menus",
+        "As URLs das redes não são inventadas: urls_source pending e nenhum ícone com link '#' no site",
+        "O copyright usa ano dinâmico ({ano}/wp_date), não o 2024 fixo do mockup",
+        "Telefone vira tel:+55..., e-mail mailto: e endereço abre o mapa, todos lidos da página de opções",
+        "capture_site.py não aponta colunas/títulos divergentes, links inválidos, falta da política de privacidade nem ano desatualizado"
+      ]
+    },
+    {
+      "id": 47,
+      "prompt": "Quero mostrar os ícones das redes também no topo do site, além do rodapé.",
+      "expected_output": "Usa o mesmo componente template-parts/social-links.php no header (location header) lendo as mesmas URLs; atualiza social.locations; sem duplicar dados.",
+      "files": [],
+      "expectations": [
+        "Reaproveita template-parts/social-links.php no header, lendo as mesmas URLs da página de opções (fonte única)",
+        "Atualiza social.locations no Blueprint para incluir header",
+        "Mantém nomes acessíveis e área de toque nos ícones do header; a captura não acusa duplicidade"
+      ]
+    },
+    {
+      "id": 48,
+      "prompt": "No rodapé da loja aparecem 'Razão Social LTDA - CNPJ 00.000.000/0000-00', bandeiras de cartão e um selo 'Site Seguro'.",
+      "expected_output": "Trata CNPJ/razão social como dado real a confirmar (o da imagem é placeholder) — legal.cnpj shown exige company.cnpj real ou uncertainty; bandeiras e selo como payment_seals (ícones), não logos de clientes; selo de segurança só se o serviço existir de fato.",
+      "files": [],
+      "expectations": [
+        "Não publica o CNPJ/razão social da imagem: pede os reais ou registra uncertainty bloqueante (subject cnpj)",
+        "Bandeiras de cartão e selo são registrados como payment_seals no rodapé, não como client_logos",
+        "Aponta que o selo 'Site Seguro' só pode aparecer se o serviço/certificado existir de fato"
+      ]
+    },
+    {
+      "id": 49,
+      "prompt": "O header da referência fica sobre a foto do hero: logo branco à esquerda, 'Início, Sobre, Serviços, Projetos, Contato' (Início sublinhado) e o botão 'Solicitar Orçamento' à direita. Não tenho referência mobile.",
+      "expected_output": "header com layout logo_left, cta com label literal e destino real, transparent true com logo_light e theme.header_scrolled decidido, submenus none, mobile_menu decidido como inferência; menu com os 5 itens literais; links herdando a cor sobre o hero e fundo ao rolar.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra layout logo_left, cta { label: 'Solicitar Orçamento', target real }, transparent true e o menu com os 5 itens literais na ordem",
+        "O estado ao rolar (theme.header_scrolled) e o menu mobile são decididos/perguntados, não presumidos silenciosamente",
+        "A implementação usa o header do esqueleto: logo claro sobre o hero, links herdando a cor do header transparente e fundo opaco ao rolar (sticky)",
+        "capture_site.py não aponta menu/botão divergentes, logo sem nome nem links com cor diferente da do header transparente"
+      ]
+    },
+    {
+      "id": 50,
+      "prompt": "No menu da referência, 'Serviços' tem uma setinha para baixo. O cliente quer que, ao passar o mouse, apareçam 'Construção', 'Reforma' e 'Projetos'.",
+      "expected_output": "submenus dropdown com o padrão disclosure acessível: botão com aria-expanded, abre no clique/Enter/seta, Esc fecha e devolve o foco, hover só como conveniência; sem JS abre com :hover e :focus-within; no celular vira acordeão.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra header.submenus dropdown e os children de 'Serviços' em menus[]",
+        "A implementação não depende só de hover: botão de submenu com aria-expanded/aria-controls, operável por teclado (Enter, seta para baixo, Esc devolvendo o foco)",
+        "Sem JS o submenu abre com :focus-within (check_theme.py não avisa hover-only) e no celular vira acordeão dentro do painel",
+        "capture_site.py não aponta submenu sem botão nem falha de teclado"
+      ]
+    },
+    {
+      "id": 51,
+      "prompt": "Acima do header há uma faixa fina com '(62) 3333-4444 | contato@empresa.com.br' e ícones de Instagram e Facebook; no header, uma lupa e um ícone de carrinho. O site é institucional.",
+      "expected_output": "top_bar [phone, email, social] do dado único (links tel:/mailto:), social.locations inclui header; actions search; o carrinho é sinalizado como decisão (exige WooCommerce/ecommerce) em vez de implementado como ícone decorativo.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra top_bar com phone, email e social, e inclui header em social.locations",
+        "A lupa vira header.actions search (busca funcional em <details>), com nome acessível",
+        "O carrinho é tratado como decisão arquitetural (WooCommerce) — perguntado, não um ícone sem função",
+        "Telefone e e-mail da barra superior saem como tel:+55 e mailto: válidos"
+      ]
+    },
+    {
+      "id": 52,
+      "prompt": "O hero da Home é uma foto de casa ao entardecer ocupando a tela, com 'Casas que valorizam o seu futuro', um texto e os botões 'Solicitar Orçamento' e 'Conhecer Projetos'. Não tenho referência mobile.",
+      "expected_output": "heroes[] kind background, height full, overlay decidido, mobile_image focal (inferência), image_role decorative, botões literais com destino real; hero.php do esqueleto com <img> fetchpriority high (LCP), svh, um h1; contraste medido na captura.",
+      "files": [],
+      "expectations": [
+        "O Blueprint registra o hero com kind background, os dois botões literais com destino real e overlay/mobile_image/image_role decididos",
+        "A foto é um <img> com fetchpriority high e loading eager (não background-image), com ponto focal ou imagem própria do celular",
+        "A altura usa svh (não 100vh) e há um único h1 na página",
+        "capture_site.py mede o contraste do título, do texto e dos botões sobre a foto e não aponta valores abaixo do mínimo"
+      ]
+    },
+    {
+      "id": 53,
+      "prompt": "As páginas Sobre, Serviços e Projetos têm uma faixa com foto e o título da página; a página 'Reformas', filha de Serviços, mostra 'Início › Serviços › Reformas' acima do título.",
+      "expected_output": "heroes[] kind page_header para cada página, breadcrumb true só onde a referência mostra; page-header.php com trilha acessível (aria-current) e JSON-LD BreadcrumbList com os mesmos itens; título h1 do admin.",
+      "files": [],
+      "expectations": [
+        "Cada página interna tem um heroes[] kind page_header, com breadcrumb true apenas na que mostra a trilha",
+        "A trilha segue a hierarquia (Início › Serviços › Reformas) com aria-current na página atual",
+        "Há JSON-LD BreadcrumbList com os mesmos itens da trilha visível",
+        "O título é o h1 da página e vem do admin (page_hero_title ou título da página)"
+      ]
+    },
+    {
+      "id": 54,
+      "prompt": "Antes do rodapé há 'Vamos construir o seu projeto?' com 'Solicitar Orçamento' e 'Falar no WhatsApp', e no topo do site uma barra 'Agenda 2027 aberta — Saiba mais' com um X para fechar.",
+      "expected_output": "banners[] cta_band reutilizável (página de opções) com botão de WhatsApp como target whatsapp (wa.me do dado único) e announcement dismissible; aviso fecha pelo teclado, não volta ao recarregar e não pisca.",
+      "files": [],
+      "expectations": [
+        "A faixa é banners[] cta_band reutilizável, editada na página de opções",
+        "O botão 'Falar no WhatsApp' usa o destino especial whatsapp (vira https://wa.me/55... do número cadastrado), sem número fixo no template",
+        "A barra de aviso é banners[] announcement dismissible: fecha pelo teclado, o foco não se perde e ela continua fechada ao recarregar",
+        "Nenhum botão sai com destino '#' ou vazio"
+      ]
+    },
+    {
+      "id": 55,
+      "prompt": "Referência de um salão de beleza em Belo Horizonte com 4 páginas (Início, Serviços, Sobre, Contato) e endereço no rodapé. Monte o Blueprint.",
+      "expected_output": "seo com plugin none, organization_type BeautySalon (subtipo de LocalBusiness, endereço presente), descrição proposta única de 50-160 caracteres para cada uma das 4 páginas (serviço + cidade, description_source proposed, entra na aprovação); security hardening standard sem exceções.",
+      "files": [],
+      "expectations": [
+        "seo.organization_type é BeautySalon (ou LocalBusiness), porque há endereço físico, e o endereço está em global_settings.company.address",
+        "seo.pages tem uma descrição para CADA página, entre 50 e 160 caracteres, diferente entre si, citando o serviço e Belo Horizonte, com description_source proposed",
+        "As descrições aparecem no resumo de aprovação para o usuário confirmar, sem inventar promessa ou dado da empresa",
+        "security: { hardening: standard, exceptions: [] }"
+      ]
+    },
+    {
+      "id": 56,
+      "prompt": "Crie o projeto no WAMP e me diga como entro no painel.",
+      "expected_output": "Scaffold sem --admin-password: senha forte aleatória mostrada uma vez e repassada ao usuário (nunca admin/admin), DISALLOW_FILE_EDIT, mu-plugin project-hardening e bloco Project hardening no .htaccess; check_security.py sem P1.",
+      "files": [],
+      "expectations": [
+        "A senha do admin é a gerada pelo scaffold (forte, aleatória), repassada ao usuário com a recomendação de guardar num gerenciador - nunca admin/admin",
+        "O projeto tem DISALLOW_FILE_EDIT, o mu-plugin project-hardening.php e o bloco 'Project hardening' antes do bloco do WordPress no .htaccess",
+        "check_security.py --url --path roda sem P1: XML-RPC fechado, ?author=1 e /wp-json/wp/v2/users sem revelar o login, erro de login genérico, sem listagem em wp-content/uploads/",
+        "Nenhuma exceção de segurança é ligada sem motivo aprovado no Blueprint"
+      ]
+    },
+    {
+      "id": 57,
+      "prompt": "O cliente já usa o Yoast SEO no site atual e quer continuar com ele. Também tem uma página 'Obrigado pelo contato' que não deve aparecer no Google.",
+      "expected_output": "seo.plugin yoast (o tema se cala: sem meta description/og/JSON-LD da empresa em dobro, caixa do tema não aparece), descrições aprovadas gravadas nos campos do Yoast; página obrigado com noindex true (fora do Google e do sitemap); captura sem descrição ou og duplicados.",
+      "files": [],
+      "expectations": [
+        "seo.plugin é yoast e o tema não imprime meta description, og:* nem o JSON-LD da empresa/post quando o Yoast está ativo (nada duplicado no <head>)",
+        "As descrições aprovadas vão para os campos do Yoast, não para um campo paralelo do tema",
+        "seo.pages tem { page: obrigado, noindex: true } e a página sai com noindex e fora do sitemap",
+        "A seção SEO da captura não aponta descrição ou og:* duplicados"
+      ]
+    },
+    {
+      "id": 58,
+      "prompt": "Na referência os títulos estão em Playfair Display (peso 600) e o texto em Lato regular, com alguns trechos em Lato negrito. Monte o Blueprint e implemente as fontes.",
+      "expected_output": "fonts self_hosted com Playfair Display [600] heading (preload 600) e Lato [400, 700] body (preload 400), licença OFL, fallback_metrics true; fetch_fonts.py baixa woff2 latin para o tema com reserva Times (serif) para Playfair e Arial para Lato; tokens com 'Playfair Display Fallback', serif.",
+      "files": [],
+      "expectations": [
+        "fonts.families tem só os pesos que aparecem: Playfair Display [600] e Lato [400, 700], licença OFL, no máximo 2 arquivos em preload",
+        "As fontes são baixadas por scripts/fetch_fonts.py para o próprio tema (woff2, subconjunto latin), sem link para fonts.googleapis.com",
+        "A reserva de Playfair Display usa Times New Roman (serif) e a de Lato usa Arial, com size-adjust calculado; os tokens incluem '<Família> Fallback'",
+        "A captura mostra fontes só do próprio domínio, pesos carregados e a linha 'Troca de fonte' sem o título mudar de linhas"
+      ]
+    },
+    {
+      "id": 59,
+      "prompt": "Pode usar o link do Google Fonts como no projeto anterior, é mais fácil.",
+      "expected_output": "Explica que o link faz o navegador de cada visitante conectar no Google (IP enviado a terceiro - LGPD) e adiciona uma conexão; mantém self_hosted (fetch_fonts.py faz o trabalho). Só usa google_cdn se o usuário insistir, registrando fonts.reason; check_theme e a captura apontam o link.",
+      "files": [],
+      "expectations": [
+        "Explica o problema do link do Google Fonts (IP do visitante enviado ao Google, LGPD; conexão extra) em linguagem simples",
+        "Mantém delivery self_hosted como recomendação, lembrando que fetch_fonts.py automatiza o download",
+        "Se o usuário mantiver o pedido, registra delivery google_cdn com reason no Blueprint - nunca escreve o link à mão no template"
+      ]
+    },
+    {
+      "id": 60,
+      "prompt": "No celular, quando o site abre, o título do topo muda de tamanho e empurra o texto para baixo depois de um instante.",
+      "expected_output": "Diagnostica a troca de fonte (texto aparece na reserva e muda ao chegar a fonte) e/ou CLS; confere fonts.fallback_metrics, a reserva '<Família> Fallback' na pilha dos tokens e o preload do peso do título; roda a captura e compara a linha 'Troca de fonte' (linhas do título e deslocamento) antes e depois.",
+      "files": [],
+      "expectations": [
+        "Relaciona o sintoma à troca de fonte (reserva sem métricas ajustadas) ou a CLS, e não só a CSS do título",
+        "Confere/gera a reserva ajustada com fetch_fonts.py e regenera tokens.css para incluir '<Família> Fallback'",
+        "Confere que o peso do título do hero está em preload com crossorigin",
+        "Mede antes e depois com capture_site.py: título com o mesmo número de linhas na troca e CLS até 0,1"
+      ]
+    },
+    {
+      "id": 61,
+      "prompt": "Não quero que o conteúdo do meu site seja usado para treinar inteligência artificial, mas quero continuar aparecendo quando alguém pergunta ao ChatGPT por uma construtora em Goiânia.",
+      "expected_output": "seo.ai_crawlers block_training, ai_crawlers_source user; scaffold --ai-crawlers block_training; robots.txt bloqueia GPTBot/ClaudeBot/Google-Extended/CCBot etc. e libera OAI-SearchBot/ChatGPT-User/Claude-SearchBot/PerplexityBot; explica que Google/Bing comuns não são afetados; captura confere.",
+      "files": [],
+      "expectations": [
+        "seo.ai_crawlers é block_training com ai_crawlers_source user",
+        "O robots.txt bloqueia os robôs de treino (GPTBot, ClaudeBot, Google-Extended, CCBot...) e mantém liberados os de busca/resposta (OAI-SearchBot, ChatGPT-User, PerplexityBot, Claude-SearchBot)",
+        "Explica que a busca comum do Google e do Bing não é afetada e que a opção pode ser mudada em Configurações do Site",
+        "A seção robots.txt da captura sai conforme (sem P1)"
+      ]
+    },
+    {
+      "id": 62,
+      "prompt": "A cliente vai escrever os posts do blog sozinha. Ela reclama que o editor tem um monte de cores que não são do site e as letras são diferentes.",
+      "expected_output": "Gera o theme.json a partir dos tokens (generate_design_tokens.py --theme-json): paleta da marca com nomes em português, fontes Títulos/Texto, tamanhos do site, sem cor livre nem paletas padrão; inc/editor.php carrega fonts/tokens/editor.css no editor; só settings, sem styles; confere que o front-end não mudou.",
+      "files": [],
+      "expectations": [
+        "O theme.json é gerado de design.tokens (não escrito à mão) e tem só 'settings'",
+        "O editor mostra só as cores da marca (nomes em português), sem cor livre, gradientes nem a paleta padrão do WordPress, e só os tamanhos do site",
+        "Dentro do editor, os títulos e o texto aparecem nas fontes do site (editor styles com fonts.css e tokens.css)",
+        "O front-end do site não muda (sem 'styles' no theme.json); check_theme.py sem aviso de theme.json"
+      ]
+    },
+    {
+      "id": 63,
+      "prompt": "Mudei a cor principal do site no Blueprint de dourado para azul. O que mais preciso atualizar?",
+      "expected_output": "Regerar tokens.css e theme.json juntos com generate_design_tokens.py (--out e --theme-json), sem editar à mão; check_theme.py avisa 'theme.json desatualizado' se só um for regerado; registrar o ajuste em DECISIONS.md.",
+      "files": [],
+      "expectations": [
+        "Regera tokens.css e theme.json juntos pelo generate_design_tokens.py (--out e --theme-json)",
+        "Não edita tokens.css nem theme.json à mão",
+        "Usa check_theme.py para confirmar que a paleta do theme.json bate com tokens.css",
+        "Registra o ajuste de token em DECISIONS.md"
+      ]
+    },
+    {
+      "id": 64,
+      "kind": "negative",
+      "prompt": "Faz só uma página HTML estática de 'em breve' para eu subir no servidor, sem WordPress.",
+      "expected_output": "Não ativa a pipeline (sem Blueprint, CPTs ou scaffold no WAMP): entrega o HTML/CSS direto, como a própria descrição da skill manda.",
+      "files": [],
+      "expectations": [
+        "Não cria Blueprint, projeto no WAMP nem tema WordPress",
+        "Entrega a página estática pedida diretamente"
+      ]
+    },
+    {
+      "id": 65,
+      "kind": "negative",
+      "prompt": "No meu WordPress que já está no ar, o botão do topo está azul e eu quero dourado. Ajusta o CSS?",
+      "expected_output": "Trata como ajuste direto de CSS num WordPress existente: sem pipeline, sem Blueprint, sem scaffold.",
+      "files": [],
+      "expectations": [
+        "Não inicia a pipeline completa nem cria Blueprint",
+        "Resolve o ajuste de CSS no tema existente, sem refazer o site"
+      ]
+    },
+    {
+      "id": 66,
+      "kind": "negative",
+      "prompt": "Cria um plugin WordPress que exporta os pedidos do WooCommerce para uma planilha.",
+      "expected_output": "Não é construção de site a partir de referência visual: a skill não deve ser usada; trata como desenvolvimento de plugin.",
+      "files": [],
+      "expectations": [
+        "Não usa a pipeline de site (Blueprint, inventário visual, tema)",
+        "Trata como tarefa de plugin, separada"
+      ]
+    },
+    {
+      "id": 67,
+      "kind": "negative",
+      "prompt": "Me ajuda a escrever um post para o blog da construtora sobre reforma de cozinha.",
+      "expected_output": "Pedido de texto, não de site: não ativa a pipeline nem mexe no tema.",
+      "files": [],
+      "expectations": [
+        "Não cria Blueprint nem projeto",
+        "Ajuda com o texto do post"
+      ]
+    },
+    {
+      "id": 68,
+      "kind": "negative",
+      "prompt": "Converte este componente React do hero em Vue.",
+      "expected_output": "Fora do escopo (framework front-end, sem WordPress): a skill não deve ser usada.",
+      "files": [],
+      "expectations": [
+        "Não ativa a skill de WordPress",
+        "Não cria tema nem Blueprint"
+      ]
+    },
+    {
+      "id": 69,
+      "kind": "ambiguous",
+      "prompt": "Faz um site WordPress pra mim.",
+      "expected_output": "Pedido vago e sem referência visual: pergunta antes (tem imagem/print/PDF do layout? que tipo de negócio? páginas?) em vez de inventar um design.",
+      "files": [],
+      "expectations": [
+        "Pergunta pela referência visual (imagem, print, PDF) antes de qualquer Blueprint",
+        "Não inventa layout nem cria projeto no WAMP sem a referência",
+        "Faz poucas perguntas objetivas, de uma vez"
+      ]
+    },
+    {
+      "id": 70,
+      "kind": "ambiguous",
+      "prompt": "Transforma isso em WordPress.",
+      "expected_output": "Sem anexo nem caminho: pergunta qual é a referência (arquivo/pasta) antes de começar.",
+      "files": [],
+      "expectations": [
+        "Pede o arquivo ou a pasta da referência",
+        "Não começa a pipeline sem a referência"
+      ]
+    },
+    {
+      "id": 71,
+      "kind": "ambiguous",
+      "prompt": "Quero um site igual ao do concorrente www.exemplo.com.br.",
+      "expected_output": "Não copia site de terceiro (marca, textos, imagens): pergunta o que o cliente quer aproveitar (estrutura, estilo) e pede a referência própria/aprovada; deixa claro que conteúdo e identidade devem ser do cliente.",
+      "files": [],
+      "expectations": [
+        "Não reproduz marca, textos ou imagens do concorrente",
+        "Pergunta o que aproveitar (estrutura, tipo de seção) e pede material próprio do cliente",
+        "Só monta Blueprint depois de ter uma referência utilizável"
+      ]
+    },
+    {
+      "id": 72,
+      "kind": "ambiguous",
+      "prompt": "Tenho o print da Home. Faz o site.",
+      "expected_output": "Há referência só da Home: segue a pipeline, mas registra em uncertainties as páginas internas e a versão mobile (não inventa sem marcar), perguntando na aprovação.",
+      "files": [],
+      "expectations": [
+        "Usa o print como referência e monta o Blueprint",
+        "Registra páginas internas e layout mobile como incertezas, sem inventar como se fossem da referência",
+        "Pergunta essas lacunas na aprovação (página visual)"
+      ]
+    },
+    {
+      "id": 73,
+      "prompt": "O Blueprint está pronto. Me mostra para eu aprovar.",
+      "expected_output": "Gera o resumo E a página visual (render_approval_page.py -> documentation/APROVACAO.html) com cores em amostras, fontes reais, botões, cada seção ao lado do recorte da referência e o menu no celular desenhado; pede aprovação pelos itens numerados, sem colar o YAML.",
+      "files": [],
+      "expectations": [
+        "Gera documentation/APROVACAO.html com render_approval_page.py (não cola o YAML no chat)",
+        "A página mostra cores como amostras, fontes renderizadas, botões e cada seção ao lado do recorte da referência",
+        "Pede a resposta pelo número dos pontos para confirmar (fontes estimadas, menu no celular, pendências)"
+      ]
+    },
+    {
+      "id": 74,
+      "prompt": "Terminei o header e o hero da Home. Posso seguir com as outras seções?",
+      "expected_output": "Fecha a fatia crítica: sem P0/P1, roda a captura com --ref e mostra ao usuário o aprovacao-visual.html (referência × site, desktop e celular); só propaga para as demais seções depois da aprovação.",
+      "files": [],
+      "expectations": [
+        "Roda capture_site.py com --ref e mostra o aprovacao-visual.html",
+        "Espera a aprovação do usuário antes de propagar o sistema para as outras seções e páginas",
+        "Não constrói um protótipo HTML separado"
+      ]
+    },
+    {
+      "id": 75,
+      "prompt": "O site está pronto. Como coloco no ar em www.construtorahorizonte.com.br?",
+      "expected_output": "Roda prelaunch_check.py --stage local e resolve P0/P1 (SMTP, e-mails de teste, usuário admin, privacidade, conteúdo de exemplo, imagens provisórias); registra launch.domain; roda go_live.py (não altera o site local) e entrega o pacote com backup, banco com domínio trocado (serializados e blocos), wp-content.zip, .htaccess da raiz, favicon.ico, wp-config com chaves novas e LEIA-ME; depois --stage production e check_security no domínio.",
+      "files": [],
+      "expectations": [
+        "Roda prelaunch_check.py antes e trata os P0/P1 apontados",
+        "Usa go_live.py com --domain e --out fora do WAMP, sem alterar o banco local",
+        "Explica que a troca de domínio é feita pelo WP-CLI (dados serializados e JSON dos blocos), nunca com localizar/substituir no SQL",
+        "Indica as verificações no endereço final (prelaunch --stage production, check_security, captura, envio de formulário)"
+      ]
+    },
+    {
+      "id": 76,
+      "prompt": "A empresa já tem um site em www.construtora-antiga.com.br. O novo vai substituir.",
+      "expected_output": "Registra redirects.old_site, roda build_redirects.py --suggest com o sitemap antigo, confirma os destinos com o usuário (assunto sem equivalente fica para confirmar, sem destino inventado), --write no projeto e --check antes de publicar (301 para o destino e nenhum endereço antigo em 404).",
+      "files": [],
+      "expectations": [
+        "Registra redirects.old_site no Blueprint e usa build_redirects.py --suggest com o sitemap do site antigo",
+        "Confirma os destinos com o usuário; endereços sem página equivalente não recebem destino inventado",
+        "Grava com --write e confere com --check (301 + destino 200, sem endereço antigo em 404)"
+      ]
+    },
+    {
+      "id": 77,
+      "prompt": "O cliente mandou o logo em PNG. Usa no ícone da aba do navegador.",
+      "expected_output": "Usa make_site_icon.py com o símbolo do logo (sem o nome), fundo sólido e 512 px; --keep-color se o símbolo estiver sobre foto; --project define o Ícone do site do WordPress (editável em Personalizar); a captura confere ícone, manifesto e theme-color.",
+      "files": [],
+      "expectations": [
+        "Usa só o símbolo do logo (sem o texto) e gera 512x512 com fundo sólido via make_site_icon.py",
+        "Define pelo Ícone do site do WordPress (--project), mantendo editável em Aparência > Personalizar",
+        "Confere na captura: ícone, apple-touch-icon, manifesto e theme-color na Home"
+      ]
+    }
+  ]
+}

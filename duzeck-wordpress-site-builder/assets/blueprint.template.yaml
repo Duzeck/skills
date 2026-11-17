@@ -1,0 +1,492 @@
+blueprint:
+  metadata:
+    schema_version: "1.18"
+    blueprint_version: "0.1"
+    generated_at:
+    updated_at:
+    generator:
+      skill: "duzeck-wordpress-site-builder"
+    mode: "recommended"
+    status: "draft"
+
+  project:
+    name:
+    slug:
+    type:
+    site_structure:        # single_page | multi_page (references/navigation.md)
+    description:
+    language:
+      primary: "pt-BR"
+      secondary: []
+    objective:
+      primary:
+      secondary: []
+    audience:
+      description:
+    reference_files: []
+
+  requirements:
+    functional: []
+    technical: []
+    business: []
+    content: []
+
+  design:
+    icon_library:
+    tokens:
+      color: { primary:, secondary:, background:, text: }
+      font_family: { heading:, body: }
+      font_size: {}
+      font_weight: {}
+      line_height: {}
+      space: { xs:, sm:, md:, lg:, xl: }
+      radius: {}
+      shadow: {}
+      layout: { container_max:, gutter: }
+
+  reference_map: []
+
+  copy: []
+
+  editable_content: []
+
+  pages: []
+
+  components: []
+
+  content_types: []
+
+  taxonomies: []
+
+  global_settings:
+    company:
+      logo:
+      name:
+      phone:
+      whatsapp:
+      email:
+      address:
+      business_hours:
+    social:
+      instagram:
+      facebook:
+      youtube:
+      linkedin:
+    branding:
+      primary_color:
+      secondary_color:
+      site_icon: pending              # media[].id do simbolo do logo (Icone do site - references/site-icon.md)
+    cta:
+      default_label:
+      default_url:
+
+  menus: []
+
+  # Um por carrossel/banner rotativo da referencia; [] se conferiu e nao ha
+  # nenhum (references/carousels.md). Exemplo:
+  # - id: home_banner
+  #   section: home_hero
+  #   kind: hero_banner            # hero_banner | cards | testimonials | logos | gallery | other
+  #   evidence: [dots, arrows]     # dots | arrows | counter | progress_bar | cut_item | user
+  #   slide_count: 3               # com bolinhas: o numero de bolinhas
+  #   autoplay: true               # true | false - nunca "talvez": pergunte
+  #   interval_ms: 6000            # >= 3000 (recomendado >= 5000) se autoplay
+  #   loop: true
+  #   controls: { arrows: true, dots: true, pause: true }   # pause obrigatorio com autoplay
+  #   per_view: { desktop: 1, tablet: 1, mobile: 1 }
+  #   storage: "repeater:home_banner_slides"
+  #   slides_content: demo         # reference | user | demo (slides 2..N nao aparecem na imagem)
+  carousels: []
+
+  # Um por formulario da referencia (references/forms.md). Exemplo:
+  # - id: contact
+  #   page: contact
+  #   section: contact_form
+  #   purpose: contact               # contact | quote | newsletter | booking | job_application | other
+  #   destination:                   # e-mail real - nunca inventado (ou uncertainty bloqueante, subject = id)
+  #   reply_to_field: contato_email
+  #   subject_field:                 # opcional: campo que entra no assunto do e-mail
+  #   required_marker: "*"           # se a referencia marca obrigatorios
+  #   fields:
+  #     - { name: contato_nome, type: text, label: "Nome", placeholder: "", required: true, autocomplete: name, width: full }
+  #   submit_label: "Enviar"
+  #   submit_icon: false
+  #   privacy: { notice: checkbox, text: "Li e concordo com a", link_text: "política de privacidade", policy_page: politica-de-privacidade, shown_in_reference: true }
+  #   anti_spam: akismet             # akismet | recaptcha_v3 | turnstile | none_local
+  forms: []
+
+  # Um por mapa da referencia; [] se conferiu e nao ha (references/maps.md). Exemplo:
+  # - id: contact_map
+  #   section: contact_info
+  #   evidence: [tiles, pin]         # tiles | pin | zoom_controls | provider_logo | view_larger_link | user
+  #   provider: google               # google | openstreetmap (exige lat_field/lng_field)
+  #   address_field: company_address # campo da pagina de opcoes (fonte unica)
+  #   embed_field: company_map_embed # opcional: "Incorporar mapa" colado no admin
+  #   load: click                    # click (padrao, LGPD) | auto (so com decisao aprovada)
+  #   aspect_ratio: "16:9"
+  #   facade_media: contact_map_image   # id em media[] (imagem antes do clique)
+  #   directions_link: true
+  maps: []
+
+  # Um por galeria de fotos; [] se conferiu e nao ha (references/galleries.md). Exemplo:
+  # - id: project_gallery
+  #   section: project_gallery
+  #   layout: grid                   # grid | masonry | featured_thumbs (carrossel -> carousels[] kind gallery)
+  #   evidence: [photo_grid, more_overlay]   # photo_grid | thumbnails | more_overlay | zoom_icon | view_all_link | user
+  #   visible_count: 6               # fotos que aparecem na referencia
+  #   total_count: 18                # com "+12": visible + 12
+  #   lightbox: true                 # true | false - nunca presumido
+  #   captions: false
+  #   aspect_ratio: "4:3"            # nao se aplica a masonry
+  #   per_row: { desktop: 3, tablet: 2, mobile: 1 }
+  #   storage: "acf_gallery:project_gallery"
+  galleries: []
+
+  # Um por video; [] se conferiu e nao ha (references/videos.md). Exemplo:
+  # - id: home_video
+  #   section: home_about
+  #   kind: embed                    # embed (YouTube/Vimeo) | file | background (so com evidence user)
+  #   source: youtube                # youtube | vimeo | file
+  #   evidence: [play_button, duration_badge]   # play_button | duration_badge | progress_bar | provider_logo | watch_cta | user
+  #   url_field: home_video_url      # youtube/vimeo
+  #   file_field:                    # file/background
+  #   poster_media: home_video_poster   # id em media[]
+  #   title_field: home_video_title  # nome acessivel
+  #   captions: true                 # true | false - nunca presumido (WCAG 1.2.2)
+  #   captions_field:                # file com legenda: anexo .vtt
+  #   aspect_ratio: "16:9"
+  #   load: click                    # embed: so carrega no clique
+  videos: []
+
+  # Um por acordeao/FAQ; [] se conferiu e nao ha (references/disclosures.md). Exemplo:
+  # - id: home_faq
+  #   section: home_faq
+  #   evidence: [plus_minus, expanded_item, question_list]   # plus_minus | chevron | expanded_item | question_list | user
+  #   item_count: 6
+  #   open_in_reference: [1]         # itens abertos na imagem (1 = primeiro); [] se todos fechados
+  #   exclusive: true                # um aberto por vez? true | false - nunca presumido
+  #   faq: true                      # pergunta/resposta
+  #   structured_data: true          # JSON-LD FAQPage (so com faq)
+  #   heading_level: 3
+  #   storage: "repeater:home_faq_items"
+  #   items_content: demo            # reference | user | demo (respostas fechadas nao aparecem na imagem)
+  accordions: []
+
+  # Um por conjunto de abas; [] se conferiu e nao ha. Exemplo:
+  # - id: services_tabs
+  #   section: home_services
+  #   evidence: [tab_row, active_indicator]   # tab_row | active_indicator | segmented_control | user
+  #   tab_count: 4
+  #   active_in_reference: 1
+  #   mobile: scroll                 # scroll | stack
+  #   heading_level: 3
+  #   storage: "repeater:services_tabs"
+  #   items_content: demo
+  tabs: []
+
+  # Uma por tabela de dados; [] se conferiu e nao ha (references/tables-pricing.md). Exemplo:
+  # - id: opening_hours
+  #   section: contact_info
+  #   kind: data                     # data | comparison (recursos x planos com ✓/✗)
+  #   evidence: [header_row, zebra_rows]   # grid_lines | header_row | zebra_rows | aligned_numbers | check_marks | user
+  #   caption: "Horário de atendimento"     # nome da tabela (literal ou proposto)
+  #   caption_visible: true
+  #   columns:
+  #     - { key: day, label: "Dia" }
+  #     - { key: hours, label: "Horário", align: end }   # type: text | number | currency | check
+  #   row_count: 3
+  #   row_header: true               # 1a coluna nomeia a linha
+  #   mobile: scroll                 # scroll | cards
+  #   heading_level: 3
+  #   storage: "repeater:opening_hours_rows"
+  #   items_content: reference
+  #   price_source:                  # obrigatorio se houver coluna currency: user | demo
+  tables: []
+
+  # Um por bloco de planos/precos; [] se conferiu e nao ha. Exemplo:
+  # - id: home_pricing
+  #   section: home_pricing
+  #   evidence: [plan_cards, currency_symbol, period_suffix, featured_badge, billing_toggle]
+  #   plan_count: 3
+  #   currency: BRL
+  #   billing: [monthly, yearly]     # monthly | quarterly | semiannual | yearly | once
+  #   default_billing: monthly
+  #   featured_plan: 2               # 1 = primeiro; omita se nao houver destaque
+  #   price_source: demo             # user (confirmado) | demo - NUNCA o preco da imagem como real sem confirmacao
+  #   comparison_table:              # opcional: id em tables[] (recursos x planos)
+  #   storage: "repeater:home_pricing_plans"
+  pricing: []
+
+  # Um por bloco de depoimentos; [] se conferiu e nao ha (references/social-proof.md). Exemplo:
+  # - id: home_testimonials
+  #   section: home_testimonials
+  #   layout: grid                   # grid | list | single | carousel (com carousel: <id em carousels[]>)
+  #   evidence: [quote_marks, quote_text, author_name, author_photo]   # + rating_stars | source_badge | user
+  #   item_count: 3
+  #   fields_shown: [photo, city]    # photo | role | company | city | rating | source
+  #   content_source: demo           # user (reais, fornecidos) | demo - os da referencia sao mockup
+  #   consent:                       # true obrigatorio com content_source user (LGPD)
+  #   storage: "post_type:testimonial"
+  testimonials: []
+
+  # Uma por faixa/grade de logos; [] se conferiu e nao ha. Exemplo:
+  # - id: home_clients
+  #   section: home_clients
+  #   layout: grid                   # grid | row | marquee | carousel
+  #   evidence: [logo_row, grayscale_logos, section_title]   # + marquee | certification_badges | user
+  #   logo_count: 6
+  #   permission: demo               # confirmed (clientes reais que autorizaram) | demo
+  #   files:                         # com confirmed: provided | pending (nunca redesenhar/recortar)
+  #   storage: "repeater:home_clients"
+  client_logos: []
+
+  # Um por bloco de equipe; [] se conferiu e nao ha (references/team-stats.md). Exemplo:
+  # - id: about_team
+  #   section: about_team
+  #   layout: grid                   # grid | list | carousel (+ carousel: <id>)
+  #   evidence: [headshots, name_role, social_icons]   # + section_title | hover_bio | user
+  #   member_count: 4
+  #   total_count:                   # se houver "ver equipe completa"
+  #   fields_shown: [photo, role, social]   # photo | role | bio | social | registration
+  #   registration: none             # none | crm | cro | crp | crn | crefito | coren | oab | crea | cau | crc | creci | other
+  #   bio: visible                   # visible | collapsed | hidden (nunca so no hover)
+  #   profile_pages: false           # cada pessoa com pagina propria?
+  #   content_source: demo           # user (equipe real) | demo
+  #   consent:                       # true obrigatorio com user (uso de imagem, LGPD)
+  #   storage: "post_type:team_member"
+  team: []
+
+  # Um por bloco de numeros em destaque; [] se conferiu e nao ha. Exemplo:
+  # - id: home_stats
+  #   section: home_about
+  #   evidence: [big_number, prefix_suffix, label_below]   # + icon | user
+  #   item_count: 3
+  #   count_up: false                # contagem 0 -> valor? true | false - nunca presumido
+  #   content_source: demo           # user (valores confirmados) | demo
+  #   storage: "repeater:home_stats"
+  stats: []
+
+  # Blog/noticias (references/blog.md). Sem blog: enabled: false. Exemplo:
+  # blog:
+  #   enabled: true
+  #   label: "Blog"                  # "Notícias", "Artigos" - literal da referencia
+  #   evidence: [post_cards, dates, categories, read_more]   # + sidebar | pagination | section_title | user
+  #   storage: post                  # sempre o post nativo
+  #   posts_page: blog               # slug da pagina de posts (em pages[])
+  #   posts_per_page: 9
+  #   card_fields: [image, date, category, excerpt]   # + author | reading_time
+  #   home_section: { id: home_blog, section: home_blog, count: 3 }   # opcional
+  #   sidebar: false
+  #   comments: false                # decisao do usuario
+  #   content_source: demo           # user (posts reais) | demo (meta _project_demo, oculto em producao)
+  blog:
+    enabled: false
+
+  # Hero e cabecalhos de pagina (references/hero-banners.md). Exemplo:
+  # heroes:
+  #   - id: home_hero
+  #     section: home_hero
+  #     kind: background            # background | split | centered | form | page_header | carousel (+carousel) | video (+video)
+  #     evidence: [full_bleed_image, text_over_image, headline, buttons]   # + split_layout | form | breadcrumb | page_title_band | user
+  #     height: full                 # full | large | auto (vira svh)
+  #     overlay: 0.45                # camada de contraste 0..1 (o QA mede o contraste real)
+  #     mobile_image: focal          # same | focal | separate
+  #     image_role: decorative       # decorative (alt vazio) | informative
+  #     buttons: [{ label: "Fale conosco", target: contato, style: primary }]
+  #   - { id: about_hero, section: about_hero, kind: page_header, evidence: [page_title_band], breadcrumb: true, has_image: false }
+  heroes: []
+
+  # Faixas de chamada e barra de aviso. Exemplo:
+  # banners:
+  #   - { id: cta, kind: cta_band, section: home_cta, reusable: true, buttons: [{ label: "Fale conosco", target: contato }] }
+  #   - { id: aviso, kind: announcement, dismissible: true, text_field: announcement_text }
+  banners: []
+
+  # Header (references/header-menu.md). Exemplo:
+  # header:
+  #   evidence: [logo, nav, cta_button]   # + top_bar | search_icon | account_icon | cart_icon | language | dropdown_indicator | transparent_over_hero | user
+  #   layout: logo_left              # logo_left | logo_center | logo_center_split
+  #   cta: { label: "Fale conosco", target: contato }   # rotulo literal + destino real
+  #   top_bar: []                    # phone | whatsapp | email | hours | social | text
+  #   actions: []                    # search | account | cart (WooCommerce) | language (plugin)
+  #   transparent: false             # sobre o hero? true exige theme.header_scrolled
+  #   logo_light:                    # campo do logo claro (header transparente)
+  #   submenus: none                 # none | dropdown | mega
+  #   mobile_menu: dropdown          # dropdown | offcanvas | fullscreen (referencia mobile ou decisao)
+  header: {}
+
+  # Rodape (references/footer-social.md). Exemplo:
+  # footer:
+  #   evidence: [columns, footer_menu, contact_block, social_icons, legal_row]   # + newsletter | back_to_top | payment_seals | map | credit | user
+  #   columns:                       # na ordem da referencia
+  #     - { id: about, kind: about, social: true }     # about | menu | contact | social | newsletter | hours | custom
+  #     - { id: links, kind: menu, title: "Links Rápidos" }
+  #     - { id: contact, kind: contact, title: "Contato" }
+  #   copyright: "© {ano} {empresa}. Todos os direitos reservados."   # {ano} dinamico
+  #   legal: { privacy_link: true, terms_link: false, cnpj: hidden }  # cnpj shown exige company.cnpj real
+  #   back_to_top: false
+  #   credit: false
+  footer: {}
+
+  # Redes sociais: na ordem da referencia; URLs nunca inventadas. Exemplo:
+  # social:
+  #   networks: [instagram, facebook, linkedin]   # instagram | facebook | linkedin | youtube | tiktok | x | pinterest | threads | whatsapp | telegram | spotify
+  #   locations: [footer]            # header | footer | contact
+  #   urls_source: pending           # user (URLs em global_settings.social) | pending (vazias no admin)
+  social:
+    networks: []
+
+  media: []
+
+  # Fontes (references/fonts.md): hospedadas no proprio site, so os pesos que
+  # aparecem na referencia, no maximo 2 pre-carregadas (titulo do hero).
+  # Toda familia de design.tokens.font_family (exceto fontes do sistema) aqui.
+  # fonts:
+  #   delivery: self_hosted           # self_hosted (padrao) | system (sem fonte web) | google_cdn (so com reason)
+  #   fallback_metrics: true          # reserva ajustada: sem salto quando a fonte chega
+  #   families:
+  #     - { family: Manrope, role: heading, weights: [700], source: google_fonts, license: OFL, preload: [700] }
+  #     - { family: Inter, role: body, weights: [400, 600], source: google_fonts, license: OFL, preload: [400] }
+  fonts:
+    delivery: self_hosted
+    fallback_metrics: true
+    families: []
+
+  # SEO (references/security-seo.md): descricao PROPOSTA por pagina (50-160
+  # caracteres, unica, com servico + cidade), aprovada pelo usuario e gravada
+  # nos campos "SEO e compartilhamento". Exemplo:
+  # seo:
+  #   plugin: none                    # none (SEO do tema) | yoast | rank_math | seopress | aioseo
+  #   organization_type: LocalBusiness   # Organization (sem atendimento no local) | LocalBusiness | subtipo (GeneralContractor, BeautySalon, Dentist...) - exige endereco
+  #   share_image: home_hero_image    # media[].id da imagem padrao ao compartilhar (1200x630)
+  #   ai_crawlers: block_training     # robots.txt - PERGUNTE: allow | block_training (bloqueia treino, mantem nas buscas com IA) | block_all
+  #   ai_crawlers_source: user        # user | default (padrao allow aplicado, confirmar)
+  #   pages:
+  #     - { page: home, description_source: proposed, description: "..." }
+  #     - { page: obrigado, noindex: true }   # some do Google e do sitemap
+  seo:
+    plugin: none
+    organization_type: Organization
+    ai_crawlers: allow
+    ai_crawlers_source: default
+    pages: []
+
+  # Seguranca: protecao basica SEMPRE ligada. Excecao so com motivo
+  # (xmlrpc | author_archives | rest_users | frame_embedding). Exemplo:
+  #   exceptions:
+  #     - { rule: xmlrpc, reason: "app Jetpack do cliente exige XML-RPC" }
+  # Publicacao (references/go-live.md): dominio final, perguntado antes de publicar.
+  launch:
+    domain: null
+
+  # Site antigo (references/redirects.md): se o cliente ja tem site, os enderecos
+  # antigos levam aos novos (301). build_redirects.py --suggest propoe o mapa.
+  #   map:
+  #     - { from: /quem-somos.html, to: about }   # id de pages[], caminho ou URL
+  redirects:
+    old_site: null
+    map: []
+
+  security:
+    hardening: standard
+    exceptions: []
+
+  plugins:
+    required: []
+    optional: []
+    prohibited: []
+
+  theme:
+    name:
+    slug:
+    type: "classic"
+    header_behavior:       # sticky | static - single_page: sempre sticky
+    supports: []
+    structure:
+      templates: []
+      template_parts: []
+      includes: []
+      assets: []
+
+  responsive:
+    reference_available: false
+    breakpoints:
+      desktop: "1200px+"
+      tablet: "768px-1199px"
+      mobile: "<768px"
+
+  accessibility: {}
+
+  integrations: []
+
+  decisions: []
+
+  uncertainties: []
+
+  dependencies: []
+
+  implementation:
+    strategy:
+    wordpress:
+      version_constraint: ">=6.4"
+      php_version_constraint: ">=8.1"
+    theme:
+      type: "classic"
+      slug:
+    content_model:
+      strategy: "custom_post_types_plus_acf_pro"
+    custom_fields:
+      provider: "acf_pro"
+    dependencies: []
+    generation_order:
+      - environment_validation
+      - dependency_validation
+      - theme_structure
+      - theme_bootstrap
+      - design_tokens
+      - post_types
+      - taxonomies
+      - custom_fields
+      - global_settings
+      - menus
+      - critical_slice
+      - pages
+      - templates
+      - template_parts
+      - assets
+      - demo_content
+      - configuration
+      - permalinks
+      - functional_tests
+      - visual_validation
+    filesystem:
+      target: "C:\\wamp64\\www\\<slug>"
+      writable: true
+    configuration:
+      required: []
+
+  validation:
+    architecture: { status: "pending", checks: [] }
+    functionality: { status: "pending", checks: [] }
+    content: { status: "pending", checks: [] }
+    navigation: { status: "pending", checks: [] }
+    forms: { status: "pending", checks: [] }
+    responsive: { status: "pending", checks: [] }
+    accessibility: { status: "pending", checks: [] }
+    performance: { status: "pending", checks: [] }
+    security: { status: "pending", checks: [] }
+    visual: { status: "pending", checks: [] }
+
+  generation:
+    status: "not_started"
+    target:
+      environment: "local"
+    wordpress:
+      required: true
+    output:
+      theme: { required: true }
+      plugins: { required: true }
+      database: { required: true }
+      documentation: { required: true }
+      demo_content: { required: true }
+      tests: { required: true }

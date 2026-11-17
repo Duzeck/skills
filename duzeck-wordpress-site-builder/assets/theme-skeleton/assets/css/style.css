@@ -1,0 +1,1725 @@
+/* Estilos do projeto.
+
+   ESTE ARQUIVO NAO TRAZ DESIGN. O esqueleto e estrutura: todo layout
+   (alinhamento do hero, colunas, posicao de titulos, cards, footer) vem da
+   REFERENCIA, medido e reproduzido secao a secao - nunca de um padrao
+   generico. Valores (cores, fontes, espacamentos, raios, container) vem
+   das variaveis de tokens.css, gerado de design.tokens do Blueprint.
+   Breakpoints: ver comentario no topo de tokens.css. */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    color: var(--color-text);
+    background: var(--color-background);
+    font-family: var(--font-body);
+}
+
+/* Titulos na fonte de titulo (tokens font_family.heading). Sem esta regra
+   a fonte e baixada e nunca aparece. Botoes/campos herdam a do texto. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading, var(--font-body));
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.container {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+/* Moldura de midia (project_media() em inc/helpers.php): a imagem nunca
+   dita o layout e o espaco NUNCA some. A proporcao vem de
+   media[].aspect_ratio do Blueprint via --ratio. */
+.media-frame {
+    position: relative;
+    aspect-ratio: var(--ratio, 16 / 9);
+    overflow: hidden;
+    margin: 0;
+}
+
+.media-frame > img,
+.media-frame > video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: var(--fit, cover);
+}
+
+/* Placeholder: so quando nao ha arquivo real nem recorte da referencia.
+   Ocupa exatamente o mesmo espaco e diz o que falta. */
+.media-frame--placeholder {
+    display: grid;
+    place-items: center;
+    background: repeating-linear-gradient(45deg, #e9e6e1 0 12px, #dedad3 12px 24px);
+    color: #5c5750;
+    font: 600 0.75rem/1.3 system-ui, sans-serif;
+    text-align: center;
+    padding: 8px;
+}
+
+/* ==========================================================================
+   Navegacao: header sticky, ancoras e menu mobile (references/navigation.md)
+   Comportamento e acessibilidade - NAO e design. Cores, alturas, fontes e o
+   visual do item ativo vem da referencia/tokens.
+   ========================================================================== */
+
+:root {
+    /* --header-height e medido pelo main.js (ResizeObserver) e corrigido a
+       cada mudanca de altura; o valor abaixo so evita salto antes do JS.
+       Ajuste-o para a altura real do header da referencia. */
+    --header-height-fallback: 5rem;
+    --admin-bar-offset: 0px;
+    --z-header: 100;
+}
+
+/* Barra de administracao do WordPress (so usuario logado): 32px no
+   desktop, 46px ate 782px; ate 600px ela rola junto (position: absolute),
+   entao o header volta a colar no topo. */
+body.admin-bar { --admin-bar-offset: 32px; }
+@media screen and (max-width: 782px) {
+    body.admin-bar { --admin-bar-offset: 46px; }
+}
+@media screen and (max-width: 600px) {
+    body.admin-bar { --admin-bar-offset: 0px; }
+}
+
+/* Ancoras nao param ESCONDIDAS atras do header (WCAG 2.4.11 - foco nao
+   encoberto): vale para clique no menu, link externo com #hash e Tab. */
+html:has(.site-header--sticky) {
+    scroll-padding-top: calc(var(--header-height, var(--header-height-fallback)) + var(--admin-bar-offset));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html:has(.site-header--sticky) {
+        scroll-behavior: smooth;
+    }
+}
+
+/* position: sticky (e nao fixed): o header continua no fluxo, sem
+   padding-top compensatorio no body e sem salto de layout (CLS).
+   ATENCAO: sticky deixa de funcionar se html, body ou qualquer ancestral
+   do header tiver overflow hidden/auto/scroll - para cortar rolagem
+   horizontal use overflow-x: clip, nunca hidden. */
+.site-header--sticky {
+    position: sticky;
+    top: var(--admin-bar-offset);
+    z-index: var(--z-header);
+    /* Header sticky PRECISA de fundo opaco (o conteudo passa por baixo).
+       Use a cor do header na referencia; se ele for transparente sobre o
+       hero, defina o fundo do estado .is-scrolled (theme.header_scrolled). */
+    background-color: var(--color-background);
+}
+
+/* .is-scrolled: o main.js liga quando a pagina sai do topo. Gancho para o
+   estado rolado (sombra, fundo, header compacto) definido no Blueprint. */
+
+/* Item do menu da secao visivel (scroll-spy): o main.js marca
+   aria-current="location". Estilize com o visual de "item ativo" da
+   referencia, por exemplo: .site-header__nav a[aria-current] { ... } */
+
+/* Menu mobile. Sem JS o botao fica `hidden` e o menu aparece inteiro.
+   Com JS (.site-header--js) o botao aparece no breakpoint mobile e o menu
+   abre/fecha; aberto, ele rola por dentro sem passar da tela. */
+.site-header__toggle {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .site-header--js .site-header__toggle {
+        display: inline-flex;
+    }
+
+    .site-header--js .site-header__panel:not(.is-open) {
+        display: none;
+    }
+
+    .site-header--js .site-header__panel.is-open {
+        max-height: calc(100dvh - var(--header-height, var(--header-height-fallback)) - var(--admin-bar-offset));
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+}
+
+/* Acessibilidade: link "Pular para o conteudo" e texto so para leitor de tela. */
+.screen-reader-text,
+.skip-link:not(:focus) {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+.skip-link:focus {
+    position: fixed;
+    top: calc(var(--admin-bar-offset) + 8px);
+    left: 8px;
+    z-index: calc(var(--z-header) + 1);
+    padding: 12px 16px;
+    background: var(--color-background);
+    color: var(--color-text);
+}
+
+#conteudo:focus {
+    outline: none;
+}
+
+@media print {
+    .site-header--sticky {
+        position: static;
+    }
+}
+
+/* ==========================================================================
+   Carrossel (template-parts/carousel.php, references/carousels.md)
+   Estrutura e comportamento - NAO e design. Posicao/forma das setas, das
+   bolinhas e do botao de pausa vem da referencia.
+   ========================================================================== */
+
+.carousel {
+    --per-view: var(--per-view-desktop, 1);
+    --carousel-gap: var(--space-md);
+    position: relative;
+}
+
+@media (max-width: 1199px) {
+    .carousel { --per-view: var(--per-view-tablet, 1); }
+}
+
+@media (max-width: 767px) {
+    .carousel { --per-view: var(--per-view-mobile, 1); }
+}
+
+/* Trilho: scroll-snap nativo. Sem JS continua arrastavel/rolavel (e
+   focavel, para rolar pelo teclado). */
+.carousel__track {
+    position: relative; /* contem .screen-reader-text dos slides (ver .data-table__scroll) */
+    display: flex;
+    gap: var(--carousel-gap);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+}
+
+/* Com JS ha setas/bolinhas: a barra de rolagem nativa sai. */
+.carousel--js .carousel__track {
+    scrollbar-width: none;
+}
+
+.carousel--js .carousel__track::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel__slide {
+    flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--carousel-gap)) / var(--per-view));
+    min-width: 0;
+    scroll-snap-align: start;
+}
+
+/* Banner de largura total: sem espaco entre slides. */
+.carousel--banner {
+    --carousel-gap: 0px;
+}
+
+.carousel__track:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+/* Area de toque minima (WCAG 2.5.8) para setas, bolinhas e pausa. */
+.carousel__arrow,
+.carousel__dot,
+.carousel__toggle {
+    min-width: 24px;
+    min-height: 24px;
+    cursor: pointer;
+}
+
+.carousel__arrow:disabled {
+    cursor: default;
+    opacity: 0.4;
+}
+
+/* Bolinha ativa: [aria-current] - estilize com o visual da referencia. */
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel__track {
+        scroll-behavior: auto;
+    }
+}
+
+/* ==========================================================================
+   Formularios (CF7 - references/forms.md) e mapa (references/maps.md)
+   Estrutura e acessibilidade - o visual dos campos vem da referencia.
+   ========================================================================== */
+
+/* Template gerado por scripts/build_cf7_form.py: .form-grid > .form-field
+   (--half = dois por linha no desktop, como na referencia). */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-sm);
+}
+
+.form-field {
+    grid-column: 1 / -1;
+    margin: 0;
+}
+
+.form-field--half {
+    grid-column: span 1;
+}
+
+@media (max-width: 767px) {
+    .form-field--half {
+        grid-column: 1 / -1;
+    }
+}
+
+.form-field label,
+.form-field legend {
+    display: block;
+}
+
+.form-field fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.form-field input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    font: inherit;
+}
+
+/* Campo invalido e mensagem do CF7: o CF7 marca aria-invalid="true" e
+   escreve .wpcf7-not-valid-tip / .wpcf7-response-output (aria-live).
+   Erro nunca so por cor: o texto da mensagem aparece junto do campo. */
+.form-field [aria-invalid="true"] {
+    outline: 2px solid currentColor;
+    outline-offset: 1px;
+}
+
+/* Mapa: proporcao fixa (sem salto de layout); a fachada e o iframe ocupam
+   o mesmo espaco. */
+.map__frame {
+    position: relative;
+    aspect-ratio: var(--ratio, 16 / 9);
+    overflow: hidden;
+}
+
+.map__frame > .map__facade,
+.map__frame > .map__iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.map__facade .media-frame {
+    height: 100%;
+    aspect-ratio: auto;
+}
+
+.map__overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: var(--space-xs);
+    text-align: center;
+}
+
+.map__load {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding-inline: var(--space-sm);
+    background: var(--color-background);
+    color: var(--color-text);
+}
+
+/* ==========================================================================
+   Galeria + lightbox (references/galleries.md) e video (references/videos.md)
+   Estrutura e acessibilidade - visual (cores, icones, "+X", play) da referencia.
+   ========================================================================== */
+
+.gallery {
+    --per-row: var(--per-row-desktop, 3);
+    --gallery-gap: var(--space-sm);
+}
+
+@media (max-width: 1199px) {
+    .gallery { --per-row: var(--per-row-tablet, 2); }
+}
+
+@media (max-width: 767px) {
+    .gallery { --per-row: var(--per-row-mobile, 1); }
+}
+
+.gallery__list {
+    display: grid;
+    grid-template-columns: repeat(var(--per-row), minmax(0, 1fr));
+    gap: var(--gallery-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.gallery__figure {
+    position: relative;
+    margin: 0;
+}
+
+.gallery__link {
+    position: relative;
+    display: block;
+}
+
+/* Proporcao fixa (sem salto de layout); masonry mantem a altura natural. */
+.gallery:not(.gallery--masonry) .gallery__figure img {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--ratio, 4 / 3);
+    height: auto;
+    object-fit: cover;
+}
+
+.gallery--featured_thumbs .gallery__item:first-child {
+    grid-column: 1 / -1;
+}
+
+/* Masonry em colunas CSS: a ordem de leitura desce coluna por coluna. */
+.gallery--masonry .gallery__list {
+    display: block;
+    columns: var(--per-row);
+    column-gap: var(--gallery-gap);
+}
+
+.gallery--masonry .gallery__item {
+    break-inside: avoid;
+    margin-bottom: var(--gallery-gap);
+}
+
+.gallery--masonry .gallery__figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* "+X" sobre a ultima foto visivel (visual da referencia). */
+.gallery__more {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+}
+
+.gallery__link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+/* Lightbox: <dialog> modal. Rolagem da pagina presa enquanto aberto. */
+html:has(.lightbox[open]) {
+    overflow: hidden;
+}
+
+.lightbox {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: var(--space-lg) var(--space-md);
+    border: 0;
+    background: transparent;
+}
+
+.lightbox::backdrop {
+    background: rgb(0 0 0 / 0.85);
+}
+
+.lightbox[open] {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    place-items: center;
+}
+
+.lightbox__figure {
+    margin: 0;
+    max-width: 100%;
+    max-height: 100%;
+    display: grid;
+    justify-items: center;
+    touch-action: pan-y;
+}
+
+.lightbox__img {
+    max-width: 100%;
+    max-height: calc(100dvh - 10rem);
+    object-fit: contain;
+}
+
+.lightbox__close {
+    justify-self: end;
+}
+
+.lightbox__prev,
+.lightbox__next {
+    position: absolute;
+    top: 50%;
+}
+
+.lightbox__prev { left: var(--space-sm); }
+.lightbox__next { right: var(--space-sm); }
+
+.lightbox__close,
+.lightbox__prev,
+.lightbox__next {
+    min-width: 44px;
+    min-height: 44px;
+    cursor: pointer;
+}
+
+/* Video: proporcao fixa para capa, player e <video>. */
+.video__frame {
+    position: relative;
+    aspect-ratio: var(--ratio, 16 / 9);
+    overflow: hidden;
+}
+
+.video__frame > .video__facade,
+.video__frame > .video__iframe,
+.video__frame > .video__media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.video__facade .media-frame {
+    height: 100%;
+    aspect-ratio: auto;
+}
+
+.video__play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+}
+
+.video__play:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: -6px;
+}
+
+.video__duration {
+    position: absolute;
+    right: var(--space-xs);
+    bottom: var(--space-xs);
+}
+
+/* Video de fundo: cobre o pai (que precisa de position: relative); a capa
+   (<img>) fica por baixo e o video so aparece quando de fato toca. */
+.video--background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.video--background .video__frame {
+    height: 100%;
+    aspect-ratio: auto;
+}
+
+.video--background .video__frame > .media-frame {
+    height: 100%;
+    aspect-ratio: auto;
+}
+
+.video--background .video__media {
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.video--background.is-playing .video__media {
+    opacity: 1;
+}
+
+.video__toggle {
+    position: absolute;
+    right: var(--space-sm);
+    bottom: var(--space-sm);
+    z-index: 1;
+    min-width: 44px;
+    min-height: 44px;
+    cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .video--background .video__media {
+        transition: none;
+    }
+}
+
+/* ==========================================================================
+   Acordeao / FAQ e abas (references/disclosures.md)
+   Estrutura e acessibilidade - icone (+/-, seta), divisores, cores e o
+   visual da aba ativa vem da referencia.
+   ========================================================================== */
+
+.accordion__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    cursor: pointer;
+    list-style: none;
+}
+
+/* Some o triangulo nativo: o icone vem da referencia (.accordion__icon). */
+.accordion__summary::-webkit-details-marker {
+    display: none;
+}
+
+.accordion__title {
+    margin: 0;
+    font: inherit;
+}
+
+.accordion__summary:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+/* Gancho de estado: icone girado/trocado com o item aberto. */
+.accordion__item[open] > .accordion__summary .accordion__icon {
+    transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .accordion__icon {
+        transition: transform 0.2s;
+    }
+}
+
+/* Abas. Sem JS: lista escondida, paineis empilhados com titulo. */
+.tabs__list {
+    display: flex;
+    gap: var(--space-xs);
+}
+
+.tabs__tab {
+    cursor: pointer;
+    min-height: 44px;
+    white-space: nowrap;
+}
+
+/* Aba ativa: [aria-selected="true"] - visual da referencia. */
+
+.tabs__tab:focus-visible,
+.tabs__panel:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+/* Com abas ativas o titulo do painel repete o rotulo da aba: sai. */
+.tabs--js .tabs__panel-title {
+    display: none;
+}
+
+/* mobile = scroll: a fileira de abas rola na horizontal, sem estourar a tela. */
+@media (max-width: 767px) {
+    .tabs--mobile-scroll .tabs__list {
+        position: relative;
+        overflow-x: auto;
+        scroll-snap-type: x proximity;
+        overscroll-behavior-x: contain;
+    }
+
+    .tabs--mobile-scroll .tabs__tab {
+        scroll-snap-align: start;
+    }
+}
+
+/* ==========================================================================
+   Planos/precos e tabelas (references/tables-pricing.md)
+   Estrutura e acessibilidade - visual (cards, destaque, selo, ✓/✗, zebra)
+   da referencia.
+   ========================================================================== */
+
+.pricing__plans {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pricing__card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* CTA no rodape do card: botoes alinhados mesmo com listas de tamanhos diferentes. */
+.pricing__cta {
+    margin-top: auto;
+}
+
+.pricing__features {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Com o seletor ativo, o rotulo do periodo dentro do card sai (sem JS ele
+   identifica cada preco). */
+.pricing--js .pricing__period-label {
+    display: none;
+}
+
+.pricing__toggle-option {
+    min-height: 44px;
+    cursor: pointer;
+}
+
+/* Opcao escolhida: [aria-pressed="true"]; plano em destaque: .is-featured;
+   recurso: .is-included / .is-excluded - visual da referencia. */
+
+.price {
+    margin: 0;
+}
+
+/* Numeros com largura fixa: precos e colunas numericas alinham. */
+.price__visual,
+.data-table td.is-end {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Tabela */
+/* position: relative em TODO conteiner com overflow: sem isso o texto
+   para leitor de tela (.screen-reader-text, absolute) usa o documento como
+   referencia, escapa do recorte e estica a pagina na horizontal. */
+.data-table__scroll {
+    position: relative;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.data-table__scroll:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+.data-table__table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table .is-start { text-align: start; }
+.data-table .is-end { text-align: end; }
+.data-table .is-center { text-align: center; }
+
+/* Numero e valor nunca quebram ("R$" numa linha, "189,50" na outra): a
+   tabela fica mais larga e rola dentro da regiao. */
+.data-table td.is-end,
+.data-table th.is-end {
+    white-space: nowrap;
+}
+
+/* Glifo padrao de ✓/✗ (aria-hidden - o leitor le "Incluído"/"Não
+   incluído"). Troque pelo icone da referencia. */
+.data-table__check.is-yes::before,
+.pricing__feature.is-included .pricing__feature-icon::before {
+    content: "\2713";
+}
+
+.data-table__check.is-no::before,
+.pricing__feature.is-excluded .pricing__feature-icon::before {
+    content: "\2715";
+}
+
+.price__currency {
+    margin-inline-end: 0.15em;
+}
+
+/* mobile = cards: cada linha vira card com "Coluna: valor". */
+@media (max-width: 767px) {
+    .data-table--mobile-cards .data-table__table,
+    .data-table--mobile-cards tbody,
+    .data-table--mobile-cards tr,
+    .data-table--mobile-cards th[scope="row"],
+    .data-table--mobile-cards td {
+        display: block;
+        text-align: start;
+    }
+
+    .data-table--mobile-cards thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+
+    .data-table--mobile-cards tr + tr {
+        margin-top: var(--space-sm);
+    }
+
+    /* Mais especifico que .data-table .is-end: no card tudo alinha ao inicio. */
+    .data-table.data-table--mobile-cards :is(th, td) {
+        text-align: start;
+        white-space: normal;
+    }
+
+    .data-table--mobile-cards caption {
+        display: block;
+        text-align: start;
+    }
+
+    .data-table--mobile-cards td::before {
+        content: attr(data-label) ": ";
+        font-weight: 600;
+    }
+}
+
+/* ==========================================================================
+   Depoimentos e logos de clientes (references/social-proof.md)
+   Estrutura e acessibilidade - visual (aspas, cards, estrelas, cinza) da
+   referencia.
+   ========================================================================== */
+
+.testimonials {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.testimonials--grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: var(--space-md);
+}
+
+.testimonial__figure,
+.testimonial__quote {
+    margin: 0;
+}
+
+.testimonial__author {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: var(--space-sm);
+    align-items: center;
+}
+
+.testimonial__author > :not(.testimonial__photo) {
+    grid-column: 2;
+}
+
+.testimonial__photo {
+    grid-row: span 3;
+    width: 3.5rem;
+    border-radius: 50%;
+}
+
+.testimonial__name {
+    font-weight: 600;
+}
+
+/* Estrelas: uma faixa "★★★★★" preenchida ate --rating (aceita meia).
+   A cor vem de variavel (NAO currentColor: o color: transparent do recorte
+   zeraria o currentColor e as estrelas sumiriam). */
+.testimonial__stars {
+    --star-color: var(--color-primary);
+    --star-empty: color-mix(in srgb, var(--star-color) 25%, transparent);
+}
+
+.testimonial__stars::before {
+    content: "\2605\2605\2605\2605\2605";
+    letter-spacing: 0.1em;
+    background: linear-gradient(90deg, var(--star-color) calc(var(--rating, 5) / 5 * 100%), var(--star-empty) 0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Logos: caixa de mesma altura; logo largo e quadrado com peso parecido. */
+.client-logos {
+    --logo-height: 3rem;
+    position: relative;
+}
+
+.client-logos__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-lg);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.client-logos--grid .client-logos__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    justify-items: center;
+}
+
+.client-logos__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--logo-height);
+}
+
+.client-logos__img {
+    width: auto;
+    max-width: 10rem;
+    height: 100%;
+    max-height: var(--logo-height);
+    object-fit: contain;
+}
+
+.client-logos__link {
+    display: flex;
+    height: 100%;
+}
+
+.client-logos__link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+}
+
+/* Cinza da referencia; cor no hover/foco (so visual). */
+.client-logos.is-grayscale .client-logos__img {
+    filter: grayscale(1);
+    opacity: 0.7;
+}
+
+.client-logos.is-grayscale .client-logos__item:hover .client-logos__img,
+.client-logos.is-grayscale .client-logos__link:focus-visible .client-logos__img {
+    filter: none;
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .client-logos__img {
+        transition: filter 0.2s, opacity 0.2s;
+    }
+}
+
+/* Marquee: so com JS (copia criada + botao de pausa) e sem movimento
+   reduzido. Viewport com position: relative + overflow (o texto de leitor
+   de tela dentro nao estica a pagina). */
+.client-logos__viewport {
+    position: relative;
+    overflow: hidden;
+}
+
+.client-logos--marquee.client-logos--js .client-logos__track {
+    display: flex;
+    width: max-content;
+}
+
+.client-logos--marquee.client-logos--js .client-logos__list {
+    flex-wrap: nowrap;
+    padding-inline-end: var(--space-lg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .client-logos--marquee.client-logos--js .client-logos__track {
+        animation: client-logos-marquee var(--marquee-duration, 30s) linear infinite;
+    }
+
+    .client-logos--marquee.is-paused .client-logos__track,
+    .client-logos--marquee:hover .client-logos__track,
+    .client-logos--marquee:focus-within .client-logos__track {
+        animation-play-state: paused;
+    }
+}
+
+/* Com movimento reduzido a copia nao aparece: fileira parada e quebrando linha. */
+@media (prefers-reduced-motion: reduce) {
+    .client-logos__list--clone {
+        display: none !important;
+    }
+
+    .client-logos--marquee.client-logos--js .client-logos__track {
+        width: auto;
+    }
+
+    .client-logos--marquee.client-logos--js .client-logos__list {
+        flex-wrap: wrap;
+    }
+}
+
+@keyframes client-logos-marquee {
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.client-logos__toggle {
+    min-width: 44px;
+    min-height: 44px;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   Equipe e numeros em destaque (references/team-stats.md)
+   Estrutura e acessibilidade - visual (cards, fotos, icones) da referencia.
+   ========================================================================== */
+
+.team,
+.team-member__social,
+.stats {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.team--grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: var(--space-md);
+}
+
+.team-member__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.team-member__name,
+.team-member__role,
+.team-member__registration {
+    margin: 0;
+}
+
+.team-member__bio > summary {
+    cursor: pointer;
+}
+
+.team-member__social {
+    display: flex;
+    gap: var(--space-xs);
+}
+
+/* Area de toque minima; o icone (aria-hidden) vem da referencia. */
+.team-member__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+}
+
+.team-member__social-link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: var(--space-md);
+}
+
+.stat__value,
+.stat__label {
+    margin: 0;
+}
+
+/* Largura reservada (min-width em ch no HTML) + digitos de largura fixa:
+   a contagem nao empurra o layout. */
+.stat__number {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   Blog / noticias (references/blog.md)
+   Estrutura e acessibilidade - visual (cards, etiqueta de categoria,
+   paginacao, icones de compartilhar) da referencia.
+   ========================================================================== */
+
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: var(--space-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Um link por card: o do titulo cobre o card inteiro (::after). */
+.post-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.post-card__link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+.post-card__link:focus-visible {
+    outline: none;
+}
+
+.post-card:focus-within {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+}
+
+/* A categoria continua clicavel por cima do link esticado. */
+.post-card .post-category {
+    position: relative;
+    z-index: 1;
+}
+
+.post-card__title,
+.post-card__meta,
+.post-card__excerpt {
+    margin: 0;
+}
+
+.blog-layout--sidebar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 18rem;
+    gap: var(--space-lg);
+}
+
+@media (max-width: 1023px) {
+    .blog-layout--sidebar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.pagination .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+.pagination .page-numbers {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+}
+
+/* Pagina atual: [aria-current="page"] - visual da referencia. */
+
+.post-share ul {
+    display: flex;
+    gap: var(--space-xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.post-share__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+}
+
+.post-single .entry-content img {
+    height: auto;
+}
+
+/* ==========================================================================
+   Rodape e redes sociais (references/footer-social.md)
+   Estrutura e acessibilidade - colunas, cores, icones e faixa inferior
+   seguem a referencia.
+   ========================================================================== */
+
+.site-footer__columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: var(--space-lg);
+}
+
+.footer-col__title {
+    margin: 0 0 var(--space-sm);
+    font-size: inherit;
+}
+
+.footer-col ul,
+.site-footer__legal {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.footer-contact {
+    font-style: normal;
+}
+
+/* E-mail e URL longos nao tem onde quebrar e estouravam a coluna no tablet
+   (encontrado no teste: rolagem horizontal em 834px com 3 colunas). */
+.site-footer,
+.site-topbar {
+    overflow-wrap: anywhere;
+}
+
+.site-footer__columns {
+    grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+}
+
+.footer-contact a,
+.footer-col nav a,
+.site-footer__legal a {
+    display: inline-block;
+    padding-block: 0.35rem;   /* alvo de toque confortavel em lista vertical */
+}
+
+.site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+}
+
+.site-footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.site-footer__copy,
+.site-footer__legal-id,
+.site-footer__credit {
+    margin: 0;
+}
+
+/* Redes sociais: icone SVG em currentColor (pega a cor do contexto). */
+.social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.social-links__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    color: inherit;
+}
+
+.social-links__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.social-links__link:focus-visible,
+.site-footer a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+.site-footer__top {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 44px;
+}
+
+/* ==========================================================================
+   Header: layout, logo, submenus, acoes, barra superior, transparente
+   (references/header-menu.md). Estrutura e acessibilidade - o visual vem
+   da referencia.
+   ========================================================================== */
+
+.site-header__inner,
+.site-header__panel {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+/* flex-wrap (defesa): se o header desktop nao couber numa largura
+   intermediaria, as linhas quebram em vez de estourar a tela. Onde o menu
+   vira hamburguer e decisao do projeto (header.mobile_menu / referencia
+   de tablet). */
+.site-header__inner {
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.site-header__panel {
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+/* Painel = menu(s) + acoes + botao. position: relative contem os textos de
+   leitor de tela quando o painel rola (overflow) no celular. */
+.site-header__panel {
+    position: relative;
+}
+
+.site-header--logo_center .site-header__inner {
+    flex-direction: column;
+}
+
+.site-header--logo_center_split .site-header__panel {
+    flex: 1;
+    justify-content: center;
+}
+
+.site-header__nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Logo: width/height vem do WordPress (sem salto); a altura visual vem da
+   referencia via --logo-height. */
+.site-logo {
+    display: inline-flex;
+    align-items: center;
+}
+
+.site-logo__img {
+    width: auto;
+    height: var(--logo-height, 3rem);
+}
+
+.site-logo__img--light {
+    display: none;
+}
+
+/* Submenus. Item com filhos e referencia de posicao do dropdown. */
+.site-header__nav .menu-item-has-children {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.site-header__nav .sub-menu {
+    display: none;
+    flex-direction: column;
+    z-index: calc(var(--z-header) + 1);
+    min-width: 14rem;
+    background: var(--color-background);
+}
+
+/* Sem JS: abre no hover e quando o FOCO entra (teclado alcanca). */
+.site-header__nav .menu-item-has-children:hover > .sub-menu,
+.site-header__nav .menu-item-has-children:focus-within > .sub-menu {
+    display: flex;
+}
+
+/* Com JS: so o botao (aria-expanded) controla. */
+.has-submenu-js .site-header__nav .menu-item-has-children:hover > .sub-menu,
+.has-submenu-js .site-header__nav .menu-item-has-children:focus-within > .sub-menu {
+    display: none;
+}
+
+.has-submenu-js .site-header__nav .menu-item-has-children.is-submenu-open > .sub-menu {
+    display: flex;
+}
+
+@media (min-width: 768px) {
+    .site-header__nav .sub-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+    }
+}
+
+/* Celular: submenu abre embaixo do item (acordeao), dentro do painel. */
+@media (max-width: 767px) {
+    .site-header__panel {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .site-header__nav ul {
+        flex-direction: column;
+    }
+
+    .site-header__nav .sub-menu {
+        flex-basis: 100%;
+        padding-inline-start: var(--space-sm);
+    }
+}
+
+.submenu-toggle,
+.site-header__action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+/* Seta do submenu (troque pelo icone da referencia); gira quando aberto. */
+.submenu-toggle__icon::before {
+    content: "\25BE";
+}
+
+.submenu-toggle[aria-expanded="true"] .submenu-toggle__icon {
+    display: inline-block;
+    transform: rotate(180deg);
+}
+
+.submenu-toggle:focus-visible,
+.site-header__action:focus-visible,
+.site-header__cta:focus-visible,
+.site-logo:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+.site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.site-header__search {
+    position: relative;
+}
+
+.site-header__search > summary {
+    list-style: none;
+}
+
+.site-header__search > summary::-webkit-details-marker {
+    display: none;
+}
+
+.site-header__search-panel {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    z-index: calc(var(--z-header) + 1);
+    min-width: 18rem;
+    background: var(--color-background);
+}
+
+.site-header__cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    white-space: nowrap;
+}
+
+/* Barra superior */
+.site-topbar__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Header transparente sobre o hero da Home: margem negativa = altura real
+   (main.js mede) poe o hero por baixo SEM tirar o header do fluxo (sticky
+   continua funcionando). Cor do texto e do fundo rolado: da referencia. */
+.site-header--transparent {
+    margin-bottom: calc(-1 * var(--header-height, var(--header-height-fallback)));
+    color: var(--header-transparent-color, #fff);
+}
+
+.site-header--transparent:not(.is-scrolled):not(.is-nav-open),
+.site-header--sticky.site-header--transparent:not(.is-scrolled):not(.is-nav-open) {
+    background-color: transparent;
+}
+
+/* Links e botoes herdam a cor do header transparente: sem isto ficam no
+   azul padrao do navegador sobre a foto do hero, quase ilegiveis
+   (encontrado no teste). O botao de destaque tem cor propria (referencia). */
+.site-header--transparent a:not(.site-header__cta),
+.site-header--transparent .submenu-toggle,
+.site-header--transparent .site-header__action {
+    color: inherit;
+}
+
+/* Submenu aberto tem fundo proprio: volta a cor de texto normal. */
+.site-header--transparent .sub-menu a {
+    color: var(--color-text);
+}
+
+.site-header--transparent.is-scrolled,
+.site-header--transparent.is-nav-open {
+    color: var(--color-text);
+    background-color: var(--color-background);
+}
+
+.site-header--transparent:not(.is-scrolled):not(.is-nav-open) .site-logo:has(.site-logo__img--light) .site-logo__img--default {
+    display: none;
+}
+
+.site-header--transparent:not(.is-scrolled):not(.is-nav-open) .site-logo__img--light {
+    display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .site-header--transparent {
+        transition: background-color 0.2s, color 0.2s;
+    }
+}
+
+/* ==========================================================================
+   Hero, cabecalho de pagina, faixa de chamada e barra de aviso
+   (references/hero-banners.md). Estrutura e acessibilidade - tipografia,
+   cores, alinhamento do texto e intensidade da camada: da referencia.
+   ========================================================================== */
+
+/* Alturas em svh (dvh como reserva): 100vh fica atras da barra do
+   navegador no celular. */
+.hero--h-full { min-height: 100svh; }
+.hero--h-large { min-height: 70svh; }
+@supports not (min-height: 1svh) {
+    .hero--h-full { min-height: 100vh; }
+    .hero--h-large { min-height: 70vh; }
+}
+
+/* Foto de fundo: imagem e texto na MESMA celula do grid (nada de
+   position absolute + altura fixa); a imagem cobre, o texto fica por cima. */
+.hero--background,
+.page-header--image,
+.cta-band--image {
+    display: grid;
+    position: relative;
+    isolation: isolate;
+}
+
+.hero--background > *,
+.page-header--image > *,
+.cta-band--image > * {
+    grid-area: 1 / 1;
+}
+
+.hero--background .hero__media,
+.page-header__media,
+.cta-band__media {
+    position: relative;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.hero__img,
+.page-header__img,
+.cta-band__img,
+.hero__media picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Camada de contraste: preto com a opacidade do admin (--overlay). Troque
+   a cor/degrade pelo da referencia; o QA mede o contraste resultante. */
+.hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgb(0 0 0 / var(--overlay, 0.45));
+}
+
+.hero--background .hero__content,
+.page-header--image .page-header__content,
+.cta-band--image .cta-band__content {
+    align-self: center;
+    color: var(--hero-text-color, #fff);
+}
+
+.hero--background .hero__content a:not(.button),
+.page-header--image a {
+    color: inherit;
+}
+
+.hero--split {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: var(--space-lg);
+}
+
+.hero--split .hero__media {
+    order: 2;
+}
+
+.hero--split .hero__img {
+    aspect-ratio: 4 / 3;
+}
+
+.hero--form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+    gap: var(--space-lg);
+    align-items: center;
+}
+
+@media (max-width: 767px) {
+    .hero--split,
+    .hero--form {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hero--split .hero__media {
+        order: 0;
+    }
+}
+
+.hero__title,
+.page-header__title,
+.cta-band__title {
+    margin: 0;
+    overflow-wrap: break-word;
+}
+
+.hero__actions,
+.cta-band__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding-inline: var(--space-md);
+    text-decoration: none;
+}
+
+.button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+/* Padrao LEGIVEL a partir dos tokens (troque pelo visual da referencia):
+   sem isto os botoes ficavam no azul padrao de link sobre a foto do hero
+   (1,5:1 medido no teste). Principal: fundo primario; secundario: contorno
+   na cor do contexto (branco sobre a foto, texto normal fora dela). */
+.button--primary {
+    background: var(--color-primary);
+    color: var(--color-background);
+}
+
+.button--secondary {
+    border: 2px solid currentColor;
+    color: inherit;
+}
+
+.hero--background .button--secondary,
+.cta-band--image .button--secondary {
+    color: var(--hero-text-color, #fff);
+}
+
+/* Trilha de navegacao */
+.breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Separador so visual: o texto alternativo vazio (/ "") faz o leitor de
+   tela nao anunciar "›" entre os itens. */
+.breadcrumb li + li::before {
+    content: "›";
+    content: "›" / "";
+    margin-inline-end: var(--space-xs);
+}
+
+/* Barra de aviso: altura fixa pela linha de texto; fechada via [hidden]
+   ANTES da pintura (script inline) - sem piscar nem salto. */
+.announcement {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+}
+
+.announcement[hidden] {
+    display: none;
+}
+
+.announcement__text {
+    margin: 0;
+}
+
+.announcement__close {
+    min-width: 44px;
+    min-height: 44px;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.announcement__close-icon::before {
+    content: "×";
+}

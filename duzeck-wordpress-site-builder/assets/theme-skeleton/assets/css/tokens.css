@@ -1,0 +1,36 @@
+/*
+ * Tokens de design - VALORES PROVISORIOS do esqueleto.
+ * Substitua gerando este arquivo a partir do Blueprint aprovado:
+ *   python scripts/generate_design_tokens.py documentation/BLUEPRINT.yaml \
+ *       --out wp-content/themes/<slug>-theme/assets/css/tokens.css
+ * Depois disso NAO edite a mao: altere design.tokens no Blueprint e gere de novo.
+ *
+ * Breakpoints (use literalmente nas media queries):
+ *   tablet: max-width 1199px | mobile: max-width 767px
+ */
+
+:root {
+    /* color */
+    --color-primary: #1a1a1a;
+    --color-secondary: #666666;
+    --color-background: #ffffff;
+    --color-text: #1a1a1a;
+
+    /* font_family */
+    --font-heading: system-ui, sans-serif;
+    --font-body: system-ui, sans-serif;
+
+    /* space */
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 24px;
+    --space-lg: 48px;
+    --space-xl: 96px;
+
+    /* radius */
+    --radius-md: 8px;
+
+    /* layout */
+    --container-max: 1200px;
+    --gutter: 24px;
+}

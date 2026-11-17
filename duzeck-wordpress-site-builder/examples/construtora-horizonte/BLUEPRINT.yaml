@@ -1,0 +1,696 @@
+blueprint:
+  metadata:
+    schema_version: "1.18"
+    blueprint_version: "0.3"
+    generated_at: "2026-10-03"
+    updated_at: "2026-11-11"
+    generator:
+      skill: "duzeck-wordpress-site-builder"
+    mode: "recommended"
+    status: "approved"
+
+  project:
+    name: "Construtora Horizonte"
+    slug: "construtora-horizonte"
+    type: "institutional"
+    site_structure: "multi_page"
+    description: "Site institucional para construtora residencial de medio padrao em Goiania-GO."
+    language:
+      primary: "pt-BR"
+      secondary: []
+    objective:
+      primary: "Gerar contato/orcamento (via formulario e WhatsApp)"
+      secondary: ["Mostrar portfolio de projetos", "Transmitir credibilidade institucional"]
+    audience:
+      description: "Pessoas buscando construir ou reformar um imovel residencial na regiao de Goiania"
+    reference_files:
+      - "examples/construtora-horizonte/reference.png"
+
+  requirements:
+    functional:
+      - { id: RF01, description: "Formulario de contato envia solicitacao", priority: high, source: layout, status: approved }
+      - { id: RF02, description: "Botao de WhatsApp leva direto para conversa", priority: high, source: layout, status: approved }
+      - { id: RF03, description: "Listagem de projetos filtravel por categoria", priority: medium, source: layout, status: approved }
+    technical: []
+    business: []
+    content: []
+
+  design:
+    colors:
+      primary: { value: "#C9872E (dourado/laranja queimado dos CTAs)", confidence: high, evidence: visual }
+      secondary: { value: "#14171C (preto/grafite de headers escuros e footer)", confidence: high, evidence: visual }
+      background: { value: "#FFFFFF e tons neutros claros", confidence: high, evidence: visual }
+    typography:
+      heading: { value: "Sans-serif grotesca, peso bold, caixa alta em labels de categoria", confidence: medium, evidence: visual }
+    style: { value: "Institucional, fotografia de arquitetura de alto contraste, cantos levemente arredondados em cards e botoes", confidence: medium, evidence: visual }
+    icon_library: "Phosphor (regular) - tracos finos como os icones de casa/ferramenta/planta dos cards"
+    tokens:
+      # Cores MEDIDAS por mediana de pixels em regioes da reference.png
+      # (2026-11-11). A estimativa anterior (#C9872E) estava errada.
+      color:
+        primary: { value: "#AA762A", confidence: high, evidence: visual }
+        primary_dark: { value: "#94612D", confidence: high, evidence: visual }
+        secondary: { value: "#15181B", confidence: high, evidence: visual }
+        background: { value: "#FDFDFB", confidence: high, evidence: visual }
+        surface: { value: "#FFFFFF", confidence: medium, evidence: visual }
+        chip: { value: "#ECEBE7", confidence: high, evidence: visual }
+        border: { value: "#ECEAE6", confidence: medium, evidence: visual }
+        text: { value: "#15181B", confidence: high, evidence: visual }
+        text_muted: { value: "#6B6E70", confidence: medium, evidence: visual }
+        whatsapp: { value: "#0E9047", confidence: high, evidence: visual }
+        overlay: { value: "rgba(13, 22, 38, 0.72)", confidence: medium, evidence: visual }
+      font_family:
+        heading: { value: "'Manrope', sans-serif", confidence: low, evidence: inference }
+        body: { value: "'Inter', sans-serif", confidence: low, evidence: inference }
+      # Remedido na rodada 2 do QA: a escala da referencia e ~30% maior que a
+      # estimada na v0.2 inicial (coluna de 589px = 1440px, fator ~2,44).
+      font_size:
+        hero: "clamp(3rem, 5.6vw, 5rem)"
+        page_hero: "clamp(2.75rem, 5vw, 4.75rem)"
+        h2: "clamp(2.1rem, 3.6vw, 3.4rem)"
+        h3: "1.625rem"
+        eyebrow: "1rem"
+        lead: "1.4375rem"
+        body: "1.3125rem"
+        small: "1.1875rem"
+      font_weight: { heading: 700, body: 400, eyebrow: 700 }
+      line_height: { heading: 1.1, body: 1.6 }
+      space: { xs: "8px", sm: "16px", md: "24px", lg: "48px", xl: "96px" }
+      radius: { sm: "6px", md: "10px", pill: "999px" }
+      shadow:
+        card: { value: "0 6px 24px rgba(21, 24, 27, 0.06)", confidence: low, evidence: visual }
+      layout: { container_max: "1280px", gutter: "40px" }
+
+  # reference.png e uma COLAGEM 1536x1024: coluna esquerda = Home (topo),
+  # coluna central = continuacao da Home, coluna direita = heros de
+  # Servicos, Projetos, Sobre e a pagina de Contato.
+  reference_map:
+    - { file: reference.png, page: home, section: header, box: [3, 2, 589, 62], note: "Header sobre o hero (transparente)" }
+    - { file: reference.png, page: home, section: home_hero, box: [3, 2, 589, 390] }
+    - { file: reference.png, page: home, section: home_services, box: [3, 395, 589, 315] }
+    - { file: reference.png, page: home, section: home_about, box: [3, 720, 589, 296] }
+    - { file: reference.png, page: home, section: home_projects, box: [605, 2, 512, 440], note: "Coluna central = continuacao da Home" }
+    - { file: reference.png, page: home, section: home_testimonials, box: [605, 450, 512, 228] }
+    - { file: reference.png, page: home, section: home_cta, box: [605, 683, 512, 158] }
+    - { file: reference.png, page: home, section: footer, box: [605, 842, 512, 174] }
+    - { file: reference.png, page: services, section: services_hero, box: [1124, 2, 408, 233] }
+    - { file: reference.png, page: projects, section: projects_hero, box: [1124, 240, 408, 215] }
+    - { file: reference.png, page: projects, section: projects_filter, box: [1150, 393, 260, 32], note: "Filtros dentro do hero" }
+    - { file: reference.png, page: about, section: about_hero, box: [1124, 460, 408, 220] }
+    - { file: reference.png, page: contact, section: contact_info, box: [1124, 725, 200, 295] }
+    - { file: reference.png, page: contact, section: contact_form, box: [1325, 725, 207, 295] }
+
+  copy:
+    - { id: nav_inicio, page: global, role: nav, text: "Início", source: reference_file }
+    - { id: nav_sobre, page: global, role: nav, text: "Sobre", source: reference_file }
+    - { id: nav_servicos, page: global, role: nav, text: "Serviços", source: reference_file }
+    - { id: nav_projetos, page: global, role: nav, text: "Projetos", source: reference_file }
+    - { id: nav_contato, page: global, role: nav, text: "Contato", source: reference_file }
+    - { id: header_cta, page: global, role: cta, text: "Solicitar Orçamento", source: reference_file }
+    - { id: home_hero_eyebrow, page: home, section: home_hero, role: label, text: "Construindo sonhos, entregando realidades", source: reference_file }
+    - { id: home_hero_title, page: home, section: home_hero, role: heading, text: "Casas que valorizam o seu futuro", source: reference_file }
+    - { id: home_hero_text, page: home, section: home_hero, role: subheading, text: "Projetos residenciais com qualidade, segurança e o acompanhamento que você precisa do início ao fim.", source: reference_file }
+    - { id: home_hero_cta_primary, page: home, section: home_hero, role: cta, text: "Solicitar Orçamento", source: reference_file }
+    - { id: home_hero_cta_secondary, page: home, section: home_hero, role: cta, text: "Conhecer Projetos", source: reference_file }
+    - { id: home_services_eyebrow, page: home, section: home_services, role: label, text: "Nossos serviços", source: reference_file }
+    - { id: home_services_title, page: home, section: home_services, role: heading, text: "Soluções completas para o seu projeto", source: reference_file }
+    - { id: service_1, page: home, section: home_services, role: heading, text: "Construção Residencial", source: reference_file }
+    - { id: service_2, page: home, section: home_services, role: heading, text: "Reforma e Ampliação", source: reference_file }
+    - { id: service_3, page: home, section: home_services, role: heading, text: "Projetos Personalizados", source: reference_file }
+    - { id: service_card_cta, page: home, section: home_services, role: cta, text: "Saiba mais", source: reference_file }
+    - { id: home_about_eyebrow, page: home, section: home_about, role: label, text: "Sobre nós", source: reference_file }
+    - { id: home_about_title, page: home, section: home_about, role: heading, text: "Mais do que construir, realizamos histórias", source: reference_file }
+    - { id: home_about_metrics, page: home, section: home_about, role: label, text: "+10 anos de experiência · +150 projetos entregues · 100% clientes satisfeitos", source: reference_file }
+    - { id: home_about_cta, page: home, section: home_about, role: cta, text: "Conheça nossa história", source: reference_file }
+    - { id: home_projects_eyebrow, page: home, section: home_projects, role: label, text: "Nossos projetos", source: reference_file }
+    - { id: home_projects_title, page: home, section: home_projects, role: heading, text: "Projetos que inspiram", source: reference_file }
+    - { id: project_filters, page: home, section: home_projects, role: label, text: "Todos · Casas · Reformas · Projetos", source: reference_file }
+    - { id: project_1, page: home, section: home_projects, role: heading, text: "Residência Alphaville", source: reference_file }
+    - { id: project_2, page: home, section: home_projects, role: heading, text: "Casa Jardins", source: reference_file }
+    - { id: project_3, page: home, section: home_projects, role: heading, text: "Residência Boulevard", source: reference_file }
+    - { id: project_4, page: home, section: home_projects, role: heading, text: "Casa do Lago", source: reference_file }
+    - { id: project_5, page: home, section: home_projects, role: heading, text: "Residência Solar", source: reference_file }
+    - { id: project_6, page: home, section: home_projects, role: heading, text: "Reforma Setor Bueno", source: reference_file }
+    - { id: home_projects_cta, page: home, section: home_projects, role: cta, text: "Ver todos os projetos", source: reference_file }
+    - { id: home_testimonials_eyebrow, page: home, section: home_testimonials, role: label, text: "Depoimentos", source: reference_file }
+    - { id: home_testimonials_title, page: home, section: home_testimonials, role: heading, text: "O que nossos clientes dizem", source: reference_file }
+    - { id: home_cta_title, page: home, section: home_cta, role: heading, text: "Vamos construir o seu projeto?", source: reference_file }
+    - { id: home_cta_whatsapp, page: home, section: home_cta, role: cta, text: "Falar no WhatsApp", source: reference_file }
+    - { id: services_hero_title, page: services, section: services_hero, role: heading, text: "Nossos Serviços", source: reference_file }
+    - { id: projects_hero_title, page: projects, section: projects_hero, role: heading, text: "Nossos Projetos", source: reference_file }
+    - { id: about_hero_title, page: about, section: about_hero, role: heading, text: "Sobre Nós", source: reference_file }
+    - { id: contact_title, page: contact, section: contact_form, role: heading, text: "Entre em Contato", source: reference_file }
+    - { id: contact_submit, page: contact, section: contact_form, role: cta, text: "Enviar Mensagem", source: reference_file }
+    - { id: home_services_text, page: home, section: home_services, role: body, text: "Da concepção à entrega, oferecemos soluções personalizadas para construir o seu imóvel com qualidade e tranquilidade.", source: reference_file }
+    - { id: service_1_text, page: home, section: home_services, role: body, text: "Casas personalizadas com alto padrão de qualidade.", source: reference_file }
+    - { id: service_2_text, page: home, section: home_services, role: body, text: "Modernize seu imóvel com segurança e planejamento.", source: reference_file }
+    - { id: service_3_text, page: home, section: home_services, role: body, text: "Projetos arquitetônicos e complementares sob medida.", source: reference_file }
+    - { id: home_about_text, page: home, section: home_about, role: body, text: "A Construtora Horizonte nasceu com o propósito de transformar projetos em lares. Atuamos em Goiânia e região com foco em qualidade, transparência e compromisso com o cliente. Nossa equipe é formada por profissionais experientes e apaixonados pelo que fazem.", source: reference_file }
+    - { id: home_projects_text, page: home, section: home_projects, role: body, text: "Cada projeto é único e reflete o nosso compromisso com a qualidade, o design e a satisfação dos nossos clientes.", source: reference_file }
+    - { id: project_locations, page: home, section: home_projects, role: label, text: "Goiânia - GO · Aparecida de Goiânia - GO · Senador Canedo - GO", source: reference_file }
+    - { id: testimonial_1, page: home, section: home_testimonials, role: body, text: "Excelente atendimento e qualidade na execução. Entregaram nosso projeto no prazo e superaram nossas expectativas.", source: reference_file }
+    - { id: testimonial_2, page: home, section: home_testimonials, role: body, text: "Profissionais competentes e transparentes. Acompanhamento detalhado de todas as etapas da obra.", source: reference_file }
+    - { id: testimonial_3, page: home, section: home_testimonials, role: body, text: "Recomendo a Construtora Horizonte pela seriedade e compromisso. Nosso sonho se tornou realidade!", source: reference_file }
+    - { id: testimonial_names, page: home, section: home_testimonials, role: label, text: "Mariana Souza · Carlos Mendes · Fernanda Oliveira", source: reference_file }
+    - { id: home_cta_text, page: home, section: home_cta, role: body, text: "Entre em contato e solicite um orçamento sem compromisso. Nossa equipe está pronta para ajudar você.", source: reference_file }
+    - { id: services_hero_text, page: services, section: services_hero, role: subheading, text: "Soluções completas para construir, reformar ou ampliar o seu imóvel.", source: reference_file }
+    - { id: projects_hero_text, page: projects, section: projects_hero, role: subheading, text: "Conheça alguns dos projetos que já realizamos e se inspire para o seu.", source: reference_file }
+    - { id: about_hero_text, page: about, section: about_hero, role: subheading, text: "Conheça nossa história, nossos valores e o compromisso que temos com cada cliente.", source: reference_file }
+    - { id: contact_text, page: contact, section: contact_form, role: subheading, text: "Estamos prontos para atender você. Solicite um orçamento ou tire suas dúvidas.", source: reference_file }
+    - { id: contact_labels, page: contact, section: contact_form, role: form, text: "Nome · E-mail · Telefone · Assunto · Mensagem", source: reference_file }
+    - { id: footer_columns, page: global, role: footer, text: "Links Rápidos · Nossos Serviços · Contato", source: reference_file }
+    - { id: footer_about_text, page: global, role: footer, text: "Construindo sonhos, entregando realidades. Projetos residenciais com qualidade, segurança e o acompanhamento que você precisa.", source: reference_file, legibility: partial }
+    - { id: footer_legal, page: global, role: footer, text: "Política de Privacidade · Termos de Uso", source: reference_file }
+    # Ano dinamico (desvio intencional: a referencia mostra 2024 fixo).
+    - { id: footer_copyright, page: global, role: footer, text: "Construtora Horizonte. Todos os direitos reservados.", source: reference_file }
+
+  # Onde cada parte visivel e editada no admin (schema 1.2). Nada visivel
+  # fica fixo no template: toda secao, header e footer tem um destino aqui.
+  editable_content:
+    - { target: header, where: "Configurações do Site > Empresa/Cabeçalho; Aparência > Menus", storage: options_page, fields: [company_logo_light, company_logo_dark, header_cta_label, header_cta_page] }
+    - { target: footer, where: "Configurações do Site > Rodapé/Empresa/Redes sociais; menu Links Rápidos", storage: options_page, fields: [footer_text, footer_links_title, footer_services_title, footer_contact_title, footer_copyright, footer_privacy_label, footer_privacy_url, footer_terms_label, footer_terms_url] }
+    - { target: home_hero, where: "Páginas > Início > Hero", storage: page_fields, fields: [home_hero_eyebrow, home_hero_title, home_hero_text, home_hero_image, home_hero_primary_label, home_hero_primary_page, home_hero_secondary_label] }
+    - { target: home_services, where: "Páginas > Início > Serviços; cards em Serviços", storage: page_fields, fields: [home_services_eyebrow, home_services_title, home_services_text, home_services_link_label] }
+    - { target: home_about, where: "Páginas > Início > Sobre", storage: page_fields, fields: [about_eyebrow, about_title, about_text, about_image, about_stats, about_button_label, about_button_page] }
+    - { target: home_projects, where: "Páginas > Início > Projetos; cards em Projetos", storage: page_fields, fields: [home_projects_eyebrow, home_projects_title, home_projects_text, home_projects_count, home_projects_button_label] }
+    - { target: home_testimonials, where: "Páginas > Início > Depoimentos; cards em Depoimentos", storage: page_fields, fields: [home_testimonials_eyebrow, home_testimonials_title] }
+    - { target: home_cta, where: "Configurações do Site > Chamada final", storage: options_page, fields: [cta_title, cta_text, cta_background, cta_primary_label, cta_primary_page, cta_whatsapp_label] }
+    - { target: about_hero, where: "Páginas > Sobre > Cabeçalho da página", storage: page_fields, fields: [page_hero_title, page_hero_text, page_hero_image] }
+    - { target: about_content, where: "Páginas > Sobre > editor; bloco Sobre em Páginas > Início > Sobre", storage: editor }
+    - { target: services_hero, where: "Configurações do Site > Serviços e Projetos", storage: options_page, fields: [services_hero_title, services_hero_text, services_hero_image] }
+    - { target: services_grid, where: "Serviços", storage: post_type }
+    - { target: projects_hero, where: "Configurações do Site > Serviços e Projetos", storage: options_page, fields: [projects_hero_title, projects_hero_text, projects_hero_image] }
+    - { target: projects_filter, where: "Projetos > Categorias de Projeto; rótulo 'Todos' em Configurações do Site > Serviços e Projetos", storage: taxonomy, fields: [projects_filter_all_label] }
+    - { target: projects_grid, where: "Projetos", storage: post_type }
+    - { target: contact_form, where: "Páginas > Contato > Cabeçalho da página; formulário em Contato (CF7)", storage: form, fields: [page_hero_title, page_hero_text] }
+    - { target: contact_info, where: "Configurações do Site > Empresa/Redes sociais", storage: options_page, fields: [company_phone, company_email, company_address_line1, company_address_line2, company_business_hours] }
+
+  pages:
+    - id: home
+      slug: ""
+      name: "Home"
+      template: "front-page.php"
+      status: approved
+      sections:
+        - { id: home_hero, component: hero, type: global, source: reference_file, order: 1, visibility: public }
+        - { id: home_services, component: service_grid, type: dynamic, source: reference_file, order: 2, visibility: public }
+        - { id: home_about, component: about_teaser, type: static, source: reference_file, order: 3, visibility: public }
+        - { id: home_projects, component: project_grid, type: dynamic, source: reference_file, order: 4, visibility: public }
+        - { id: home_testimonials, component: testimonial_grid, type: dynamic, source: reference_file, order: 5, visibility: public }
+        - { id: home_cta, component: cta, type: global, source: reference_file, order: 6, visibility: public }
+
+    - id: about
+      slug: "sobre"
+      name: "Sobre"
+      template: "page.php"
+      status: approved
+      sections:
+        - { id: about_hero, component: hero, type: static, source: reference_file, order: 1, visibility: public }
+        - { id: about_content, component: rich_text, type: static, source: inference, order: 2, visibility: public }
+
+    - id: services
+      slug: "servicos"
+      name: "Serviços"
+      template: "archive-service.php"
+      status: approved
+      sections:
+        - { id: services_hero, component: hero, type: static, source: reference_file, order: 1, visibility: public }
+        - { id: services_grid, component: service_grid, type: dynamic, source: inference, order: 2, visibility: public }
+
+    - id: projects
+      slug: "projetos"
+      name: "Projetos"
+      template: "archive-project.php"
+      status: approved
+      sections:
+        - { id: projects_hero, component: hero, type: static, source: reference_file, order: 1, visibility: public }
+        - { id: projects_filter, component: category_filter, type: functional, source: reference_file, order: 2, visibility: public }
+        - { id: projects_grid, component: project_grid, type: dynamic, source: inference, order: 3, visibility: public }
+
+    - id: contact
+      slug: "contato"
+      name: "Contato"
+      template: "page-contato.php"
+      status: approved
+      sections:
+        - { id: contact_form, component: contact_form, type: functional, source: reference_file, order: 1, visibility: public }
+        - { id: contact_info, component: contact_info, type: global, source: reference_file, order: 2, visibility: public }
+
+  components:
+    - { id: header, name: "Header", reusable: true, source: reference_file }
+    - { id: footer, name: "Footer", reusable: true, source: reference_file }
+    - { id: hero, name: "Hero", reusable: true, source: reference_file }
+    - { id: cta, name: "CTA com botao de orcamento e WhatsApp", reusable: true, source: reference_file }
+    - { id: service_grid, name: "Grid de servicos (3 cards)", reusable: true, source: reference_file }
+    - { id: project_grid, name: "Grid de projetos com imagem+localizacao", reusable: true, source: reference_file }
+    - { id: testimonial_grid, name: "Grid de depoimentos (3 cards)", reusable: true, source: reference_file }
+    - { id: category_filter, name: "Filtro de categoria de projeto", reusable: true, source: reference_file }
+    - { id: contact_form, name: "Formulario de contato", reusable: false, source: reference_file }
+
+  content_types:
+    - id: service
+      name: "Servico"
+      plural_name: "Serviços"
+      wordpress: { type: custom_post_type, slug: service, public: true, has_archive: true, rewrite: { slug: "servicos" } }
+      supports: ["title", "thumbnail"]   # imagem do card = thumbnail nativo (nao duplicar em campo)
+      fields:
+        - { id: service_icon, label: "Icone", type: text, required: false, source: reference_file, description: "Nome do icone Phosphor (ex.: house-line). Aparece no circulo sobre a foto do card." }
+        - { id: service_short_description, label: "Descricao curta", type: textarea, required: true, source: reference_file, description: "Ate 2 linhas; aparece no card da Home e de Servicos." }
+        - { id: service_detailed_description, label: "Descricao detalhada", type: rich_text, required: false, source: inference, description: "Texto da pagina do servico." }
+
+    - id: project
+      name: "Projeto"
+      plural_name: "Projetos"
+      wordpress: { type: custom_post_type, slug: project, public: true, has_archive: true, rewrite: { slug: "projetos" } }
+      supports: ["title", "thumbnail"]   # imagem do card = thumbnail nativo
+      fields:
+        - { id: project_gallery, label: "Galeria", type: gallery, required: false, source: inference, description: "Fotos exibidas na pagina do projeto." }
+        - { id: project_neighborhood, label: "Bairro", type: text, required: false, source: reference_file, description: "Opcional; exibido antes da cidade quando preenchido." }
+        - { id: project_city, label: "Cidade", type: text, required: true, source: reference_file, description: "Aparece sob o titulo do card (ex.: Goiania)." }
+        - { id: project_state, label: "UF", type: text, required: true, default: "GO", source: reference_file, description: "Sigla do estado, 2 letras." }
+        - { id: project_description, label: "Descricao", type: rich_text, required: false, source: inference, description: "Texto da pagina do projeto." }
+        - { id: project_completion_date, label: "Data de conclusao", type: date, required: false, source: inference, description: "Usada para ordenar do mais recente ao mais antigo." }
+        - { id: project_client, label: "Cliente", type: text, required: false, source: inference, description: "Uso interno; nao exibido no card." }
+        - { id: project_featured, label: "Destaque na Home", type: boolean, required: false, default: false, source: inference, description: "Marque para exibir na secao Projetos que inspiram da Home (ate 6)." }
+
+    - id: testimonial
+      name: "Depoimento"
+      plural_name: "Depoimentos"
+      wordpress: { type: custom_post_type, slug: testimonial, public: false, has_archive: false }
+      supports: ["title"]
+      fields:
+        - { id: testimonial_client_name, label: "Nome do cliente", type: text, required: true, source: reference_file, description: "Nome exibido abaixo do depoimento." }
+        - { id: testimonial_quote, label: "Depoimento", type: textarea, required: true, source: reference_file, description: "Ate ~200 caracteres para caber no card." }
+        - { id: testimonial_client_photo, label: "Foto do cliente", type: image, required: false, source: reference_file, description: "Foto quadrada; exibida em circulo." }
+        - { id: testimonial_location, label: "Cidade do cliente", type: text, required: false, source: reference_file, description: "Ex.: Goiania - GO." }
+        - { id: testimonial_featured, label: "Destaque na Home", type: boolean, required: false, default: true, source: inference, description: "Exibe na Home (ate 3)." }
+
+  taxonomies:
+    - id: project_category
+      name: "Categoria de Projeto"
+      slug: "categoria-projeto"
+      hierarchical: true
+      post_types: ["project"]
+      terms: ["casas", "reformas", "projetos"]
+
+  global_settings:
+    company:
+      logo: "extrair do reference.png (marca 'Construtora Horizonte')"
+      name: "Construtora Horizonte"
+      phone: "(62) 99999-9999"
+      whatsapp: "(62) 99999-9999"
+      email: "contato@construtorahorizonte.com.br"
+      address: "Rua das Palmeiras, 123 - Setor Bueno - Goiania - GO"
+      business_hours: "Seg - Sex: 8h as 18h"
+    social:
+      instagram: "(icone presente no footer, URL nao informada)"
+      facebook: "(icone presente no footer, URL nao informada)"
+      youtube: "(icone presente no footer, URL nao informada)"
+      linkedin: "(icone presente no footer, URL nao informada)"
+    branding:
+      primary_color: "#AA762A"
+      secondary_color: "#15181B"
+      site_icon: site_icon             # simbolo do logo (sem o nome) -> Icone do site (make_site_icon.py)
+    cta:
+      default_label: "Solicitar Orçamento"
+      default_url: "#contato"
+
+  menus:
+    - id: primary
+      name: "Menu Principal"
+      location: "primary"
+      items:
+        - { label: "Início", target: "home", type: page }
+        - { label: "Sobre", target: "sobre", type: page }
+        - { label: "Serviços", target: "servicos", type: page }
+        - { label: "Projetos", target: "projetos", type: page }
+        - { label: "Contato", target: "contato", type: page }
+    - id: footer
+      name: "Links Rapidos"
+      location: "footer"
+      items:
+        - { label: "Início", target: "home", type: page }
+        - { label: "Sobre", target: "sobre", type: page }
+        - { label: "Serviços", target: "servicos", type: page }
+        - { label: "Projetos", target: "projetos", type: page }
+        - { label: "Contato", target: "contato", type: page }
+
+  # Conferido: a referencia nao tem carrossel (depoimentos em grid fixo de 3).
+  carousels: []
+
+  forms:
+    - id: contact
+      page: contact
+      section: contact_form
+      purpose: contact
+      destination: "contato@construtorahorizonte.com.br"
+      reply_to_field: contato_email
+      subject_field: contato_assunto
+      required_marker: "*"            # asterisco vermelho ao lado do rotulo, na referencia
+      fields:
+        - { name: contato_nome, type: text, label: "Nome", required: true, autocomplete: name }
+        - { name: contato_email, type: email, label: "E-mail", required: true, autocomplete: email }
+        - { name: contato_telefone, type: tel, label: "Telefone", required: false, autocomplete: tel }
+        - { name: contato_assunto, type: select, label: "Assunto", placeholder: "Selecione...", required: false, options: ["Orçamento", "Dúvidas", "Outros"] }
+        - { name: contato_mensagem, type: textarea, label: "Mensagem", required: true }
+      submit_label: "Enviar Mensagem"
+      submit_icon: true               # seta a direita do texto, na referencia
+      privacy:
+        notice: text
+        text: "Ao enviar, você concorda com a nossa"
+        link_text: "Política de Privacidade"
+        policy_page: politica-de-privacidade
+        shown_in_reference: false     # desvio intencional (LGPD), aprovado
+      anti_spam: akismet
+
+  # Conferido: a referencia nao tem mapa (o endereco aparece so em texto).
+  maps: []
+
+  # Conferido: a referencia nao tem galeria (projetos sao cards com titulo e
+  # texto) nem video (nenhum botao play, duracao ou logo de provedor).
+  galleries: []
+  videos: []
+
+  # Conferido: a referencia nao tem acordeao/FAQ nem abas.
+  accordions: []
+  tabs: []
+
+  # Conferido: a referencia nao tem tabela de dados nem precos
+  # (orcamento e sob consulta, via formulario).
+  tables: []
+  pricing: []
+
+  # Depoimentos da referencia: nomes, fotos e falas sao do mockup -> demo
+  # (o tema os oculta em producao) ate o cliente enviar os reais com autorizacao.
+  testimonials:
+    - id: home_testimonials
+      section: home_testimonials
+      layout: grid
+      evidence: [quote_marks, quote_text, author_name, author_photo]
+      item_count: 3
+      fields_shown: [photo, city]
+      content_source: demo
+      consent:
+      storage: "post_type:testimonial"
+
+  # Conferido: a referencia nao tem logos de clientes/parceiros.
+  client_logos: []
+
+  # Conferido: a referencia nao tem bloco de equipe.
+  team: []
+
+  # "+10 anos / +150 projetos / 100% satisfeitos" (secao Sobre): afirmacoes
+  # de negocio vindas do mockup -> demo ate o cliente confirmar os valores.
+  stats:
+    - id: home_about_stats
+      section: home_about
+      evidence: [big_number, prefix_suffix, label_below]
+      item_count: 3
+      count_up: false                # referencia estatica; animacao nao pedida
+      content_source: demo
+      storage: "repeater:about_stats"
+
+  # Conferido: a referencia nao tem blog/noticias (nenhum card com data/categoria).
+  blog:
+    enabled: false
+
+  # Hero da Home: foto de fundo, texto a esquerda (camada mais escura desse
+  # lado), dois botoes. Paginas internas: faixa com foto, titulo e texto,
+  # sem trilha de navegacao (a referencia nao mostra).
+  heroes:
+    - id: home_hero
+      section: home_hero
+      kind: background
+      evidence: [full_bleed_image, text_over_image, headline, buttons]
+      height: full
+      overlay: 0.45
+      mobile_image: focal            # ponto focal na fachada (sem referencia mobile)
+      image_role: decorative         # o texto ja diz tudo; a foto e ambiente
+      buttons:
+        - { label: "Solicitar Orçamento", target: contato, style: primary }
+        - { label: "Conhecer Projetos", target: projetos, style: secondary }
+    - { id: about_hero, section: about_hero, kind: page_header, evidence: [page_title_band, full_bleed_image], breadcrumb: false, overlay: 0.5, mobile_image: focal, image_role: decorative, has_image: true }
+    - { id: services_hero, section: services_hero, kind: page_header, evidence: [page_title_band, full_bleed_image], breadcrumb: false, overlay: 0.5, mobile_image: focal, image_role: decorative, has_image: true }
+    - { id: projects_hero, section: projects_hero, kind: page_header, evidence: [page_title_band, full_bleed_image], breadcrumb: false, overlay: 0.5, mobile_image: focal, image_role: decorative, has_image: true }
+
+  # Faixa "Vamos construir o seu projeto?" (foto escura, 2 botoes) - reutilizavel.
+  banners:
+    - id: home_cta
+      kind: cta_band
+      section: home_cta
+      reusable: true
+      buttons:
+        - { label: "Solicitar Orçamento", target: contato, style: primary }
+        - { label: "Falar no WhatsApp", target: "whatsapp", style: secondary }
+
+  # Header da referencia: logo claro a esquerda, 5 itens (ativo sublinhado),
+  # botao "Solicitar Orçamento", transparente sobre a foto do hero.
+  # Menu mobile e estado rolado nao aparecem na imagem: decisoes registradas.
+  header:
+    evidence: [logo, nav, cta_button, transparent_over_hero]
+    layout: logo_left
+    cta: { label: "Solicitar Orçamento", target: contato }
+    top_bar: []
+    actions: []
+    transparent: true
+    logo_light: company_logo_light
+    submenus: none
+    mobile_menu: dropdown           # inferencia (sem referencia mobile)
+
+  # Rodape da referencia: logo + texto + redes | Links Rapidos | Nossos
+  # Servicos | Contato; faixa inferior com copyright, Politica de
+  # Privacidade e Termos de Uso. Ano dinamico ({ano}) - o "2024" da
+  # imagem e do mockup.
+  footer:
+    evidence: [columns, footer_menu, contact_block, social_icons, legal_row]
+    columns:
+      - { id: about, kind: about, social: true }
+      - { id: links, kind: menu, title: "Links Rápidos" }
+      - { id: services, kind: menu, title: "Nossos Serviços" }
+      - { id: contact, kind: contact, title: "Contato" }
+    copyright: "© {ano} {empresa}. Todos os direitos reservados."
+    legal: { privacy_link: true, terms_link: true, cnpj: hidden }
+    back_to_top: false
+    credit: false
+
+  # 5 icones no rodape; os 4 primeiros identificados. URLs nao informadas:
+  # campos vazios no admin (icone so aparece quando preenchido).
+  social:
+    networks: [instagram, facebook, youtube, linkedin]
+    locations: [footer]
+    urls_source: pending
+
+  media:
+    - { id: logo, purpose: "Logo Construtora Horizonte (header e footer)", type: logo, treatment: crop_from_reference, source: placeholder, required: true, replace_before_launch: true }
+    - { id: site_icon, purpose: "Simbolo do logo (casas) para o Icone do site - aba do navegador e atalho no celular", type: logo, treatment: crop_from_reference, source: placeholder, required: true, replace_before_launch: true }
+    - { id: home_hero_photo, purpose: "Fachada noturna no hero da Home", page: home, section: home_hero, type: photo, treatment: crop_from_reference, source: placeholder, aspect_ratio: "3:2", object_fit: cover, required: true, replace_before_launch: true }
+    - { id: service_photos, purpose: "Fotos dos cards de servico (thumbnail)", page: home, section: home_services, type: photo, treatment: crop_from_reference, source: placeholder, aspect_ratio: "3:2", object_fit: cover, required: true, replace_before_launch: true }
+    - { id: service_icons, purpose: "Icones circulares dos cards de servico", page: home, section: home_services, type: icon, treatment: icon_library, source: external, required: true }
+    - { id: project_photos, purpose: "Fotos dos cards de projeto (thumbnail)", page: home, section: home_projects, type: photo, treatment: crop_from_reference, source: placeholder, aspect_ratio: "3:2", object_fit: cover, required: true, replace_before_launch: true }
+    - { id: testimonial_photos, purpose: "Fotos dos clientes nos depoimentos", page: home, section: home_testimonials, type: photo, treatment: placeholder, source: placeholder, aspect_ratio: "1:1", object_fit: cover, required: false, replace_before_launch: true }
+    - { id: home_cta_background, purpose: "Fundo escuro com foto da secao CTA", page: home, section: home_cta, type: background, treatment: crop_from_reference, source: placeholder, aspect_ratio: "21:9", object_fit: cover, required: true, replace_before_launch: true }
+
+  fonts:
+    delivery: self_hosted              # arquivos no proprio site (scripts/fetch_fonts.py) - sem Google no navegador do visitante
+    fallback_metrics: true             # reserva Arial ajustada: o texto nao pula quando a fonte chega
+    families:
+      - { family: Manrope, role: heading, weights: [600, 700, 800], source: google_fonts, license: OFL, preload: [700] }   # 700 = titulo do hero
+      - { family: Inter, role: body, weights: [400, 500, 600], source: google_fonts, license: OFL, preload: [400] }
+
+  seo:
+    plugin: none                      # SEO do tema (inc/seo.php); yoast | rank_math | seopress | aioseo = tema se cala
+    organization_type: GeneralContractor   # construtora com endereco fisico -> LocalBusiness (subtipo)
+    share_image: home_hero_image       # imagem padrao ao compartilhar (1200x630, recorte do hero)
+    ai_crawlers: block_training        # bloqueia treino de IA; o site continua citado nas buscas com IA (ChatGPT, Perplexity, Claude)
+    ai_crawlers_source: user           # escolha do cliente na aprovacao
+    pages:
+      - { page: home, description_source: proposed, description: "Construtora Horizonte: obras residenciais e comerciais em Goiânia, do projeto à entrega das chaves, com prazo e transparência. Peça seu orçamento." }
+      - { page: about, description_source: proposed, description: "Conheça a Construtora Horizonte: nossa história, a equipe e o jeito de construir com prazo, qualidade e transparência em Goiânia e região." }
+      - { page: services, description_source: proposed, description: "Construção residencial e comercial, reformas e gerenciamento de obras em Goiânia. Veja os serviços da Construtora Horizonte e como trabalhamos." }
+      - { page: projects, description_source: proposed, description: "Projetos da Construtora Horizonte em Goiânia: casas, edifícios e obras comerciais entregues, com fotos e a localização de cada obra." }
+      - { page: contact, description_source: proposed, description: "Fale com a Construtora Horizonte: telefone, WhatsApp, e-mail e endereço em Goiânia. Envie sua mensagem e receba um orçamento sem compromisso." }
+
+  launch:
+    domain: null                       # dominio final - perguntar antes da publicacao (go_live.py --domain)
+
+  redirects:
+    old_site: null                     # o cliente nao tem site hoje; se tiver: URL + build_redirects.py --suggest
+    map: []
+
+  security:
+    hardening: standard                # mu-plugin project-hardening + .htaccess do scaffold
+    exceptions: []                     # nenhuma integracao exige XML-RPC, pagina de autor ou iframe externo
+
+  plugins:
+    required:
+      - { name: "Advanced Custom Fields PRO", purpose: "Todo o conteúdo editável no admin: páginas de opções, campos da Home e das páginas, campos dos CPTs, repeater de números", reason: "Necessário para o administrador alterar qualquer texto ou imagem do site sem mexer em código (decisão v0.3)", source: system }
+      - { name: "Contact Form 7", purpose: "Formulario de contato", reason: "Padrao deste ambiente para formularios de contato", source: system }
+    optional: []
+    prohibited: []
+
+  theme:
+    name: "Construtora Horizonte Theme"
+    slug: "construtora-horizonte-theme"
+    type: classic
+    header_behavior: static
+    header_scrolled: "fundo #14171C (secundaria) com logo claro - decisao: a referencia so mostra o header sobre o hero"
+    supports: ["title-tag", "post-thumbnails"]
+    structure:
+      templates: ["front-page.php", "page.php", "archive-service.php", "archive-project.php", "single-service.php", "single-project.php", "page-contact.php"]
+      template_parts: ["hero", "service-card", "project-card", "testimonial-card", "cta", "category-filter"]
+
+  responsive:
+    reference_available: false
+    breakpoints: { desktop: "1200px+", tablet: "768px-1199px", mobile: "<768px" }
+    note: "Nenhuma referencia mobile foi fornecida; comportamento mobile sera inferido conforme references/responsive-guidelines.md e validado visualmente apos implementacao."
+
+  accessibility: {}
+
+  integrations:
+    - { service: "WhatsApp", purpose: "Botao 'Falar no WhatsApp' no CTA", enabled: true, authorization: "layout mostra o botao explicitamente", configuration_needed: "numero de WhatsApp real a confirmar" }
+
+  decisions:
+    - id: D001
+      subject: "Modelagem de servicos"
+      decision: "Criar CPT Service"
+      reason: "Servicos sao conteudo repetitivo (3 cards) com campos estruturados (icone, descricao) e candidatos a administracao futura"
+      source: inference
+      confidence: high
+      status: approved
+      affects: ["theme", "content_types"]
+    - id: D002
+      subject: "Modelagem de projetos"
+      decision: "Criar CPT Project + taxonomia Project Category"
+      reason: "6+ projetos com campos proprios (localizacao, imagem) e filtro por categoria explicito no layout"
+      source: layout
+      confidence: high
+      status: approved
+      affects: ["theme", "content_types", "taxonomies"]
+    - id: D003
+      subject: "Modelagem de depoimentos"
+      decision: "Criar CPT Testimonial (sem archive/single publico)"
+      reason: "3 depoimentos com estrutura propria (nome, foto, citacao), mas sem evidencia de pagina individual - usado apenas via query na Home"
+      source: inference
+      confidence: medium
+      status: approved
+      affects: ["content_types"]
+    - id: D004
+      subject: "Dados globais"
+      decision: "Centralizar telefone, WhatsApp, endereco, horario e redes sociais em ACF Options Page"
+      reason: "Esses dados aparecem no header/footer/contato; devem ter fonte unica"
+      source: best_practice
+      confidence: high
+      status: approved
+      affects: ["global_settings", "theme"]
+    - id: D005
+      subject: "Tema"
+      decision: "Tema classico (nao bloco/FSE)"
+      reason: "Padrao deste ambiente para controle preciso de HTML/CSS/templates"
+      source: user
+      confidence: high
+      status: approved
+      affects: ["theme"]
+    - id: D006
+      subject: "Posicao da secao de Depoimentos e do CTA final"
+      decision: "Exibir Depoimentos e CTA final apenas na Home (nao replicar em Projetos)"
+      reason: "A referencia mostra as duas secoes uma unica vez no mosaico; sem evidencia clara de que aparecem em mais de uma pagina, assume-se Home por ser o padrao mais comum. Baixo impacto arquitetural (apenas posicionamento, nao modelagem)."
+      source: inference
+      confidence: medium
+      status: approved
+      affects: ["pages"]
+
+  uncertainties:
+    - id: u_social_5
+      subject: social
+      question: "O 5º ícone de rede no rodapé (círculo com símbolo) é de qual rede? Ilegível na referência."
+      impact: low
+      blocking: false
+      status: pending
+    - id: U001
+      subject: "Comportamento do filtro de projetos"
+      question: "O filtro de categoria na pagina Projetos (Todos/Casas/Reformas/Projetos) deve recarregar a pagina ou filtrar via AJAX sem reload?"
+      options: ["reload (mais simples, sem JS)", "ajax (mais fluido, requer JS/REST)"]
+      impact: medium
+      blocking: false
+      status: resolved
+      resolution: "Usuario escolheu reload (query_var de categoria via link, sem JavaScript)."
+    - id: U002
+      subject: "Numero de WhatsApp real"
+      question: "O numero (62) 99999-9999 mostrado no layout e um numero real de WhatsApp Business para o botao 'Falar no WhatsApp', ou e placeholder de design?"
+      options: []
+      impact: medium
+      blocking: false
+      status: resolved
+      resolution: "Construtora Horizonte e uma empresa ficticia definida como caso de teste desta Skill (ver examples/construtora-horizonte/case.md); os dados de contato do mockup sao, por definicao, conteudo demo, nao dados reais de uma empresa existente. Mantidos como estao e marcados como demo em VALIDATION.md - nao e uma incerteza real neste caso de teste especifico."
+    - id: U003
+      subject: "Paginas individuais"
+      question: "Cada projeto e cada servico devem ter pagina propria (single), ou os cards apenas exibem informacao no proprio grid (sem link para detalhe)? O layout nao mostra claramente um estado de hover/link nos cards."
+      options: ["projeto e servico com single", "apenas projeto com single", "nenhum com single"]
+      impact: high
+      blocking: false
+      status: resolved
+      resolution: "Usuario escolheu: projeto e servico com pagina propria (single-project.php e single-service.php)."
+    - id: U004
+      subject: "Redes sociais - URLs reais"
+      question: "Os icones de Instagram/Facebook/YouTube/LinkedIn no footer tem URLs reais para vincular?"
+      options: []
+      impact: low
+      blocking: false
+      status: pending
+
+  dependencies:
+    - { id: DEP01, from: "implementation", depends_on: "wp-cli disponivel no WAMP", reason: "Scaffolding automatizado do projeto", type: tooling }
+    - { id: DEP02, from: "plugins.required", depends_on: "licenca ACF PRO ja disponivel neste ambiente", reason: "Campos repeater/gallery/relationship", type: licensing }
+
+  implementation:
+    strategy: "Classic theme + ACF PRO + CPTs nativos"
+    wordpress: { version_constraint: ">=6.4", php_version_constraint: ">=8.1" }
+    theme: { type: classic, slug: "construtora-horizonte-theme" }
+    content_model: { strategy: "custom_post_types_plus_acf_pro" }
+    custom_fields: { provider: acf_pro }
+    dependencies: ["DEP01", "DEP02"]
+    generation_order:
+      - environment_validation
+      - dependency_validation
+      - theme_structure
+      - theme_bootstrap
+      - post_types
+      - taxonomies
+      - custom_fields
+      - global_settings
+      - menus
+      - pages
+      - templates
+      - template_parts
+      - assets
+      - demo_content
+      - configuration
+      - permalinks
+      - functional_tests
+      - visual_validation
+    filesystem: { target: "C:/wamp64/www/construtora-horizonte", writable: true }
+    configuration: { required: ["ACF PRO zip local"] }
+
+  validation:
+    architecture: { status: "pending", checks: [] }
+    functionality: { status: "pending", checks: [] }
+    content: { status: "pending", checks: [] }
+    navigation: { status: "pending", checks: [] }
+    forms: { status: "pending", checks: [] }
+    responsive: { status: "pending", checks: [] }
+    accessibility: { status: "pending", checks: [] }
+    performance: { status: "pending", checks: [] }
+    security: { status: "pending", checks: [] }
+    visual: { status: "pending", checks: [] }
+
+  generation:
+    status: "not_started"
+    target: { environment: local }
+    wordpress: { required: true }
+    output:
+      theme: { required: true }
+      plugins: { required: true }
+      database: { required: true }
+      documentation: { required: true }
+      demo_content: { required: true }
+      tests: { required: true }

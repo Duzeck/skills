@@ -1,0 +1,10 @@
+/*
+Theme Name: Project Theme Skeleton
+Theme URI:
+Author: duzeck
+Description: Esqueleto de tema classico gerado pela Skill duzeck-wordpress-site-builder. Renomeie este cabecalho (Theme Name, Description) para o projeto real antes de ativar.
+Version: 0.1.0
+Text Domain: project-theme
+*/
+
+/* Os estilos reais do projeto ficam em assets/css/style.css, carregado via inc/enqueue.php. Este arquivo existe apenas porque o WordPress exige um style.css com este cabecalho para reconhecer o tema. */

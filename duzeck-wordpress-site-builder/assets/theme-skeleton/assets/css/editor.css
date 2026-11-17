@@ -1,0 +1,24 @@
+/* Conteudo dentro do editor de blocos (inc/editor.php). O WordPress aplica
+   estas regras so na area de edicao (.editor-styles-wrapper): quem escreve
+   um post ve as fontes e cores do site. Valores so de tokens.css. */
+
+body {
+    color: var(--color-text);
+    background: var(--color-background);
+    font-family: var(--font-body);
+    line-height: var(--lh-body, 1.6);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading, var(--font-body));
+    line-height: var(--lh-heading, 1.2);
+}
+
+/* Estilos de conteudo do projeto (cor de link, citacao, lista) que existirem
+   no style.css para .entry-content: copie aqui as MESMAS regras - o editor
+   espelha o site, nunca inventa. */
